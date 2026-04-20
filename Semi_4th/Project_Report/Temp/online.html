@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Healthcare Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Online Healthcare Portal</h1>
+         <nav>
+            <p>Select an option:</p>
+            <ul>
+                <li><a href="#add-hospital-section" class="nav-link">1. Enter Hospital Data</a></li>
+                <li><a href="#search-hospital-section" class="nav-link">2. Search Hospital Data</a></li>
+                <li><a href="#add-ambulance-section" class="nav-link">3. Enter Ambulance Data</a></li>
+                <li><a href="#search-ambulance-section" class="nav-link">4. Search Ambulance Data</a></li>
+                <li><a href="#add-blood-section" class="nav-link">5. Enter Blood Data</a></li>
+                <li><a href="#search-blood-section" class="nav-link">6. Search Blood Data</a></li>
+                <li><a href="#add-doctor-section" class="nav-link">7. Enter Doctor Data</a></li>
+                <li><a href="#search-doctor-section" class="nav-link">8. Search Doctor Data</a></li>
+                <li><a href="#add-symptom-section" class="nav-link">9. Patient Give Symptom</a></li>
+                <li><a href="#search-patient-section" class="nav-link">10. Doctor Search Patient Data</a></li>
+                <li><a href="#add-prescription-section" class="nav-link">11. Doctor Give Prescription</a></li>
+                <li><a href="#search-prescription-section" class="nav-link">12. Patient Search Prescription</a></li>
+                <li><a href="#medex-redirect-section" class="nav-link">13. Redirect to Medicine Information (Medex)</a></li>
+            </ul>
+             <a href="index.html" class="home-link button">Back to Main Portal</a>
+        </nav>
+
+        <!-- Section 1: Add Hospital -->
+        <section id="add-hospital-section">
+            <h2>1. Enter Hospital Data</h2>
+            <form id="add-hospital-form">
+                <label for="hospital-name">Hospital Name:</label>
+                <input type="text" id="hospital-name" required>
+                <label for="hospital-location">Hospital Location:</label>
+                <input type="text" id="hospital-location" required>
+                <label for="hospital-number">Hospital Contact Number:</label>
+                <input type="text" id="hospital-number" required>
+                <label for="hospital-availability">Hospital Availability:</label>
+                <input type="text" id="hospital-availability" required>
+                <button type="submit">Add Hospital</button>
+            </form>
+            <div class="output" id="add-hospital-output"></div>
+        </section>
+
+        <!-- Section 2: Search Hospital -->
+        <section id="search-hospital-section">
+            <h2>2. Search Hospital Data</h2>
+             <form id="search-hospital-form">
+                 <label for="search-hospital-location">Enter Hospital Location:</label>
+                <input type="search" id="search-hospital-location" required>
+                 <button type="submit">Search by Location</button>
+             </form>
+            <div class="results" id="search-hospital-results">Enter a location to search for hospitals.</div>
+        </section>
+
+        <!-- Section 3: Add Ambulance -->
+        <section id="add-ambulance-section">
+             <h2>3. Enter Ambulance Data</h2>
+             <form id="add-ambulance-form">
+                 <label for="ambulance-name">Ambulance Service Name:</label>
+                 <input type="text" id="ambulance-name" required>
+                 <label for="ambulance-driver">Driver Name:</label>
+                 <input type="text" id="ambulance-driver" required>
+                 <label for="ambulance-number">Contact Number:</label>
+                 <input type="text" id="ambulance-number" required>
+                 <label for="ambulance-location">Location:</label>
+                 <input type="text" id="ambulance-location" required>
+                 <label for="ambulance-availability">Availability:</label>
+                 <input type="text" id="ambulance-availability" required>
+                 <label for="ambulance-status">Status:</label>
+                 <input type="text" id="ambulance-status" required>
+                 <button type="submit">Add Ambulance</button>
+             </form>
+             <div class="output" id="add-ambulance-output"></div>
+        </section>
+
+        <!-- Section 4: Search Ambulance -->
+        <section id="search-ambulance-section">
+            <h2>4. Search Ambulance Data</h2>
+            <form id="search-ambulance-form">
+                <label for="search-ambulance-location">Enter Your Location:</label>
+                <input type="search" id="search-ambulance-location" required>
+                <button type="submit">Search Ambulances</button>
+            </form>
+            <div class="results" id="search-ambulance-results">Enter your location to find ambulances.</div>
+        </section>
+
+        <!-- Section 5: Add Blood Data -->
+        <section id="add-blood-section">
+             <h2>5. Enter Blood Bank Data</h2>
+             <form id="add-blood-form">
+                 <label for="blood-group">Blood Group:</label>
+                 <input type="text" id="blood-group" required>
+                 <label for="blood-bank-name">Blood Bank Name:</label>
+                 <input type="text" id="blood-bank-name" required>
+                 <label for="blood-bank-number">Contact Number:</label>
+                 <input type="text" id="blood-bank-number" required>
+                 <label for="blood-bank-location">Location:</label>
+                 <input type="text" id="blood-bank-location" required>
+                 <label for="blood-bank-availability">Availability:</label>
+                 <input type="text" id="blood-bank-availability" required>
+                 <label for="blood-bank-status">Status:</label>
+                 <input type="text" id="blood-bank-status" required>
+                 <button type="submit">Add Blood Bank Info</button>
+             </form>
+             <div class="output" id="add-blood-output"></div>
+        </section>
+
+        <!-- Section 6: Search Blood Data -->
+        <section id="search-blood-section">
+            <h2>6. Search Blood Bank Data</h2>
+            <form id="search-blood-form">
+                 <label for="search-blood-location">Enter Blood Bank Location:</label>
+                <input type="search" id="search-blood-location" required>
+                 <button type="submit">Search Blood Banks</button>
+            </form>
+            <div class="results" id="search-blood-results">Enter a location to find blood banks.</div>
+        </section>
+
+        <!-- Section 7: Add Doctor Data -->
+         <section id="add-doctor-section">
+             <h2>7. Enter Doctor Data</h2>
+             <form id="add-doctor-form">
+                 <label for="doctor-name">Doctor Name:</label>
+                 <input type="text" id="doctor-name" required>
+                 <label for="online-doctor-specialization">Specialization:</label>
+                 <input type="text" id="online-doctor-specialization" required>
+                 <label for="doctor-number">Contact Number:</label>
+                 <input type="text" id="doctor-number" required>
+                 <label for="doctor-location">Location (Clinic/Hospital):</label>
+                 <input type="text" id="doctor-location" required>
+                 <label for="doctor-availability">Availability (e.g., Mon-Fri 9am-5pm):</label>
+                 <input type="text" id="doctor-availability" required>
+                 <label for="doctor-fees">Fees (Enter 0 if free):</label>
+                 <input type="number" id="doctor-fees" step="0.01" required>
+                 <label for="doctor-status">Status (e.g., Available, On Leave):</label>
+                 <input type="text" id="doctor-status" required>
+                 <button type="submit">Add Doctor</button>
+             </form>
+             <div class="output" id="add-doctor-output"></div>
+         </section>
+
+        <!-- Section 8: Search Doctor Data -->
+        <section id="search-doctor-section">
+            <h2>8. Search Doctor Data</h2>
+             <form id="search-doctor-form">
+                <label for="search-doctor-location">Enter Doctor Location:</label>
+                <input type="search" id="search-doctor-location" required>
+                 <button type="submit">Search Doctors</button>
+            </form>
+            <div class="results" id="search-doctor-results">Enter a location to find doctors.</div>
+        </section>
+
+        <!-- Section 9: Patient Give Symptom -->
+        <section id="add-symptom-section">
+            <h2>9. Patient: Enter Symptoms</h2>
+            <form id="add-symptom-form">
+                <label for="patient-id">Patient ID (Create a unique one):</label>
+                <input type="text" id="patient-id" required>
+                <label for="patient-name">Patient Name:</label>
+                <input type="text" id="patient-name" required>
+                <label for="patient-age">Patient Age:</label>
+                <input type="text" id="patient-age" required> <!-- Changed to text for flexibility -->
+                <label for="patient-symptom">Symptoms:</label>
+                <textarea id="patient-symptom" rows="4" required style="width: calc(100% - 22px); padding: 10px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px;"></textarea>
+                <button type="submit">Submit Symptoms</button>
+            </form>
+            <div class="output" id="add-symptom-output"></div>
+        </section>
+
+        <!-- Section 10: Doctor Search Patient Data -->
+         <section id="search-patient-section">
+            <h2>10. Doctor: Search Patient Data</h2>
+            <form id="search-patient-form">
+                <label for="search-patient-id">Enter Patient ID:</label>
+                <input type="search" id="search-patient-id" required>
+                <button type="submit">Search Patient</button>
+            </form>
+            <div class="results" id="search-patient-results">Enter a patient ID to search.</div>
+        </section>
+
+        <!-- Section 11: Doctor Give Prescription -->
+         <section id="add-prescription-section">
+            <h2>11. Doctor: Give Prescription</h2>
+            <form id="add-prescription-form">
+                 <label for="pres-patient-id">Patient ID (Must match existing patient):</label>
+                 <input type="text" id="pres-patient-id" required>
+                 <div id="pres-patient-info" class="output" style="margin-bottom: 15px;">Enter Patient ID above to verify patient details.</div>
+
+                 <label for="medicine-name">Medicine Name:</label>
+                 <input type="text" id="medicine-name" required>
+                 <label for="medicine-time">Time (e.g., Morning, After food):</label>
+                 <input type="text" id="medicine-time" required>
+                 <label for="medicine-dose">Dose (e.g., 1 tablet, 10ml):</label>
+                 <input type="text" id="medicine-dose" required>
+                 <label for="medicine-days">Duration (Days):</label>
+                 <input type="text" id="medicine-days" required>
+                <button type="submit">Add Prescription</button>
+            </form>
+             <div class="output" id="add-prescription-output"></div>
+        </section>
+
+        <!-- Section 12: Patient Search Prescription -->
+        <section id="search-prescription-section">
+            <h2>12. Patient: Search Prescription</h2>
+             <form id="search-prescription-form">
+                <label for="search-pres-patient-id">Enter Your Patient ID:</label>
+                <input type="search" id="search-pres-patient-id" required>
+                 <button type="submit">Search Prescription</button>
+            </form>
+            <div class="results" id="search-prescription-results">Enter your patient ID to view prescription.</div>
+        </section>
+
+        <!-- Section 13: Medex Redirect -->
+        <section id="medex-redirect-section">
+             <h2>13. Search Medicine Information (Medex)</h2>
+             <form id="medex-redirect-form">
+                 <label for="medex-medicine-name">Enter Generic Name of Medicine:</label>
+                 <input type="search" id="medex-medicine-name" required>
+                 <button type="submit">Search on Medex</button>
+            </form>
+            <div class="output" id="medex-redirect-output"></div>
+         </section>
+
+    </div>
+    <script src="online.js"></script>
+</body>
+</html>

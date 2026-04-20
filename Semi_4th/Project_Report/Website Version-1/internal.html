@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Internal Portal</title>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="main-header">
+         <div class="container">
+              <h1><i class="fas fa-cogs"></i> Hospital Internal Portal</h1>
+         </div>
+    </header>
+
+    <main class="container">
+        <nav class="sidebar"> <!-- Changed nav structure slightly -->
+            <h3><i class="fas fa-compass"></i> Portal Menu</h3>
+            <ul>
+                <li><a href="#add-room-section" class="nav-link"><i class="fas fa-plus-circle"></i> Add Room Information</a></li>
+                <li><a href="#search-room-section" class="nav-link"><i class="fas fa-search"></i> Get Room Information</a></li>
+                <li><a href="#add-worker-section" class="nav-link"><i class="fas fa-user-plus"></i> Add Worker Information</a></li>
+                <li><a href="#search-worker-section" class="nav-link"><i class="fas fa-address-book"></i> Get Worker Information</a></li>
+            </ul>
+            <a href="index.html" class="home-link button button-secondary"><i class="fas fa-arrow-left"></i> Back to Main</a>
+        </nav>
+
+        <!-- Sections remain the same structure but use updated h2 class -->
+        <section id="add-room-section" class="content-section">
+            <h2 class="section-title"><i class="fas fa-door-open"></i> Add Room Information</h2>
+            <form id="add-room-form">
+                 <!-- Form fields ... -->
+                 <label for="room-number">Room Number:</label>
+                 <input type="text" id="room-number" required>
+                 <label for="room-type">Room Type (AC/Non-AC):</label>
+                 <input type="text" id="room-type" required>
+                 <label for="room-availability">Room Availability:</label>
+                 <input type="text" id="room-availability" required>
+                 <label for="room-for">Room For:</label>
+                 <input type="text" id="room-for" required>
+                 <label for="room-capacity">Capacity (People per patient):</label>
+                 <input type="number" id="room-capacity" required>
+                <button type="submit"><i class="fas fa-save"></i> Add Room</button>
+            </form>
+            <div class="output" id="add-room-output"></div> <!-- JS will add icons here -->
+        </section>
+
+        <section id="search-room-section" class="content-section">
+            <h2 class="section-title"><i class="fas fa-binoculars"></i> Get Room Information</h2>
+            <form id="search-room-form">
+                <!-- Form fields ... -->
+                 <label for="search-room-number">Enter Room Number:</label>
+                 <input type="search" id="search-room-number" placeholder="Enter room number..." required>
+                <button type="submit"><i class="fas fa-search"></i> Search Room</button>
+            </form>
+            <div class="results" id="search-room-results"></div> <!-- JS will add icons/results -->
+        </section>
+
+        <section id="add-worker-section" class="content-section">
+            <h2 class="section-title"><i class="fas fa-user-tie"></i> Add Worker Information</h2>
+            <form id="add-worker-form">
+                <!-- Form fields ... -->
+                 <label for="worker-id">Worker ID:</label>
+                 <input type="text" id="worker-id" required>
+                 <label for="worker-name">Worker Name:</label>
+                 <input type="text" id="worker-name" required>
+                 <label for="worker-job-title">Worker Job Title:</label>
+                 <input type="text" id="worker-job-title" required>
+                 <label for="worker-hours">Working Hours:</label>
+                 <input type="text" id="worker-hours" required>
+                 <div id="doctor-spec-field">
+                     <label for="doctor-specialization">Doctor Specialization (Enter '0' if not Doctor):</label>
+                    <input type="text" id="doctor-specialization" value="0">
+                 </div>
+                 <label for="worker-contact">Worker Contact Number:</label>
+                 <input type="text" id="worker-contact" required>
+                <button type="submit"><i class="fas fa-user-plus"></i> Add Worker</button>
+            </form>
+             <div class="output" id="add-worker-output"></div>
+        </section>
+
+        <section id="search-worker-section" class="content-section">
+            <h2 class="section-title"><i class="fas fa-id-card"></i> Get Worker Information</h2>
+            <form id="search-worker-form">
+                 <!-- Form fields ... -->
+                 <label for="search-worker-id">Enter Worker ID:</label>
+                 <input type="search" id="search-worker-id" placeholder="Enter worker ID..." required>
+                <button type="submit"><i class="fas fa-search-plus"></i> Search Worker</button>
+            </form>
+            <div class="results" id="search-worker-results"></div>
+        </section>
+
+    </main>
+     <footer class="main-footer">
+        <p>© 2025 A project By Team Kobi. Hospital Management System. All rights reserved.</p>
+    </footer>
+    <script src="internal.js"></script>
+</body>
+</html>

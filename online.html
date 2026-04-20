@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Portal | MedFlow HMS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+             <h1><a href="index.html" style="text-decoration: none; color: inherit;"><i class="fas fa-heart-pulse"></i> MedFlow</a> <small style="font-size: 0.8rem; opacity: 0.6; margin-left: 1rem;">Patient Portal</small></h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="dashboard-layout">
+            <aside class="sidebar">
+                <h3>Services</h3>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#add-hospital-section" class="nav-link"><i class="fas fa-hospital"></i> Hospitals</a></li>
+                    <li class="nav-item"><a href="#add-ambulance-section" class="nav-link"><i class="fas fa-ambulance"></i> Ambulances</a></li>
+                    <li class="nav-item"><a href="#add-blood-section" class="nav-link"><i class="fas fa-tint"></i> Blood Bank</a></li>
+                    <li class="nav-item"><a href="#add-doctor-section" class="nav-link"><i class="fas fa-user-md"></i> Doctors</a></li>
+                    <li class="nav-item"><a href="#add-symptom-section" class="nav-link"><i class="fas fa-notes-medical"></i> Symptoms</a></li>
+                    <li class="nav-item"><a href="#search-prescription-section" class="nav-link"><i class="fas fa-file-prescription"></i> Prescriptions</a></li>
+                    <li class="nav-item"><a href="#medex-redirect-section" class="nav-link"><i class="fas fa-pills"></i> Medex Search</a></li>
+                </ul>
+                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                    <a href="index.html" class="btn btn-secondary" style="width: 100%;"><i class="fas fa-arrow-left"></i> Home</a>
+                </div>
+            </aside>
+
+            <div class="main-content">
+                <!-- Section 1: Hospital -->
+                <section id="add-hospital-section" class="content-section">
+                    <h2 class="section-title"><i class="fas fa-plus-square"></i> Add Hospital Data</h2>
+                    <form id="add-hospital-form">
+                        <div class="form-group">
+                            <label for="hospital-name">Hospital Name</label>
+                            <input type="text" id="hospital-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hospital-location">Location</label>
+                            <input type="text" id="hospital-location" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hospital-number">Contact Number</label>
+                            <input type="text" id="hospital-number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hospital-availability">Availability</label>
+                            <input type="text" id="hospital-availability" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Hospital</button>
+                    </form>
+                    <div class="output" id="add-hospital-output"></div>
+                    
+                    <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border);">
+                    
+                    <h2 class="section-title"><i class="fas fa-search"></i> Search Hospital</h2>
+                    <form id="search-hospital-form">
+                        <div class="form-group">
+                            <label for="search-hospital-location">Enter Location</label>
+                            <input type="search" id="search-hospital-location" placeholder="Search by city..." required>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-map-marked-alt"></i> Find Hospitals</button>
+                    </form>
+                    <div class="results" id="search-hospital-results"></div>
+                </section>
+
+                <!-- Section 2: Ambulance -->
+                <section id="add-ambulance-section" class="content-section">
+                    <h2 class="section-title"><i class="fas fa-ambulance"></i> Add Ambulance Data</h2>
+                    <form id="add-ambulance-form">
+                        <div class="form-group"><label for="ambulance-name">Service Name</label><input type="text" id="ambulance-name" required></div>
+                        <div class="form-group"><label for="ambulance-driver">Driver Name</label><input type="text" id="ambulance-driver" required></div>
+                        <div class="form-group"><label for="ambulance-number">Contact</label><input type="text" id="ambulance-number" required></div>
+                        <div class="form-group"><label for="ambulance-location">Location</label><input type="text" id="ambulance-location" required></div>
+                        <div class="form-group"><label for="ambulance-availability">Availability</label><input type="text" id="ambulance-availability" required></div>
+                        <div class="form-group"><label for="ambulance-status">Status</label><input type="text" id="ambulance-status" required></div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Ambulance</button>
+                    </form>
+                    <div class="output" id="add-ambulance-output"></div>
+
+                    <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border);">
+
+                    <h2 class="section-title"><i class="fas fa-search-location"></i> Search Ambulance</h2>
+                    <form id="search-ambulance-form">
+                        <div class="form-group"><label for="search-ambulance-location">Your Location</label><input type="search" id="search-ambulance-location" required></div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-location-arrow"></i> Find Ambulance</button>
+                    </form>
+                    <div class="results" id="search-ambulance-results"></div>
+                </section>
+
+                <!-- Section 3: Blood Bank -->
+                <section id="add-blood-section" class="content-section">
+                    <h2 class="section-title"><i class="fas fa-tint"></i> Add Blood Bank</h2>
+                    <form id="add-blood-form">
+                        <div class="form-group"><label for="blood-group">Blood Group</label><input type="text" id="blood-group" required></div>
+                        <div class="form-group"><label for="blood-bank-name">Bank Name</label><input type="text" id="blood-bank-name" required></div>
+                        <div class="form-group"><label for="blood-bank-number">Contact</label><input type="text" id="blood-bank-number" required></div>
+                        <div class="form-group"><label for="blood-bank-location">Location</label><input type="text" id="blood-bank-location" required></div>
+                        <div class="form-group"><label for="blood-bank-availability">Availability</label><input type="text" id="blood-bank-availability" required></div>
+                        <div class="form-group"><label for="blood-bank-status">Status</label><input type="text" id="blood-bank-status" required></div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Blood Data</button>
+                    </form>
+                    <div class="output" id="add-blood-output"></div>
+
+                    <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border);">
+
+                    <h2 class="section-title"><i class="fas fa-vial"></i> Search Blood Bank</h2>
+                    <form id="search-blood-form">
+                        <div class="form-group"><label for="search-blood-location">Enter Location</label><input type="search" id="search-blood-location" required></div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Find Blood</button>
+                    </form>
+                    <div class="results" id="search-blood-results"></div>
+                </section>
+
+                <!-- Section 4: Doctors -->
+                <section id="add-doctor-section" class="content-section">
+                    <h2 class="section-title"><i class="fas fa-user-md"></i> Add Doctor</h2>
+                    <form id="add-doctor-form">
+                        <div class="form-group"><label for="doctor-name">Doctor Name</label><input type="text" id="doctor-name" required></div>
+                        <div class="form-group"><label for="online-doctor-specialization">Specialization</label><input type="text" id="online-doctor-specialization" required></div>
+                        <div class="form-group"><label for="doctor-number">Contact</label><input type="text" id="doctor-number" required></div>
+                        <div class="form-group"><label for="doctor-location">Clinic Location</label><input type="text" id="doctor-location" required></div>
+                        <div class="form-group"><label for="doctor-availability">Availability</label><input type="text" id="doctor-availability" required></div>
+                        <div class="form-group"><label for="doctor-fees">Fees</label><input type="number" id="doctor-fees" required></div>
+                        <div class="form-group"><label for="doctor-status">Status</label><input type="text" id="doctor-status" required></div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Doctor</button>
+                    </form>
+                    <div class="output" id="add-doctor-output"></div>
+
+                    <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border);">
+
+                    <h2 class="section-title"><i class="fas fa-stethoscope"></i> Search Doctors</h2>
+                    <form id="search-doctor-form">
+                        <div class="form-group"><label for="search-doctor-location">Enter Location</label><input type="search" id="search-doctor-location" required></div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Find Doctors</button>
+                    </form>
+                    <div class="results" id="search-doctor-results"></div>
+                </section>
+
+                <!-- Section 5: Symptoms -->
+                <section id="add-symptom-section" class="content-section">
+                    <h2 class="section-title"><i class="fas fa-head-side-cough"></i> Submit Symptoms</h2>
+                    <form id="add-symptom-form">
+                        <div class="form-group"><label for="patient-id">Patient ID</label><input type="text" id="patient-id" required></div>
+                        <div class="form-group"><label for="patient-name">Patient Name</label><input type="text" id="patient-name" required></div>
+                        <div class="form-group"><label for="patient-age">Age</label><input type="text" id="patient-age" required></div>
+                        <div class="form-group"><label for="patient-symptom">Symptoms</label><textarea id="patient-symptom" rows="4" required></textarea></div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Submit</button>
+                    </form>
+                    <div class="output" id="add-symptom-output"></div>
+
+                    <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border);">
+
+                    <h2 class="section-title"><i class="fas fa-notes-medical"></i> Doctor Search Patient</h2>
+                    <form id="search-patient-form">
+                        <div class="form-group"><label for="search-patient-id">Patient ID</label><input type="search" id="search-patient-id" required></div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Find Patient</button>
+                    </form>
+                    <div class="results" id="search-patient-results"></div>
+                </section>
+
+                <!-- Section 6: Prescriptions -->
+                <section id="add-prescription-section" class="content-section">
+                    <h2 class="section-title"><i class="fas fa-prescription"></i> Give Prescription</h2>
+                    <form id="add-prescription-form">
+                        <div class="form-group"><label for="pres-patient-id">Patient ID</label><input type="text" id="pres-patient-id" required></div>
+                        <div id="pres-patient-info" class="results info" style="margin-bottom: 1.5rem; display: none;"></div>
+                        <div class="form-group"><label for="medicine-name">Medicine</label><input type="text" id="medicine-name" required></div>
+                        <div class="form-group"><label for="medicine-time">Timing</label><input type="text" id="medicine-time" required></div>
+                        <div class="form-group"><label for="medicine-dose">Dose</label><input type="text" id="medicine-dose" required></div>
+                        <div class="form-group"><label for="medicine-days">Duration (Days)</label><input type="number" id="medicine-days" required></div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-file-medical"></i> Save Prescription</button>
+                    </form>
+                    <div class="output" id="add-prescription-output"></div>
+
+                    <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border);">
+
+                    <h2 id="search-prescription-section" class="section-title"><i class="fas fa-file-prescription"></i> Your Prescription</h2>
+                    <form id="search-prescription-form">
+                        <div class="form-group"><label for="search-pres-patient-id">Patient ID</label><input type="search" id="search-pres-patient-id" required></div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-receipt"></i> Get Prescription</button>
+                    </form>
+                    <div class="results" id="search-prescription-results"></div>
+                </section>
+
+                <!-- Section 7: Medex -->
+                <section id="medex-redirect-section" class="content-section">
+                    <h2 class="section-title"><i class="fas fa-pills"></i> Medex Medicine Search</h2>
+                    <form id="medex-redirect-form">
+                        <div class="form-group"><label for="medex-medicine-name">Medicine Name</label><input type="search" id="medex-medicine-name" required></div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> Search Medex</button>
+                    </form>
+                    <div class="output" id="medex-redirect-output"></div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2025 MedFlow Online Patient Services. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="online.js"></script>
+</body>
+</html>

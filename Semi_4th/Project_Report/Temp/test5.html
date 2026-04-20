@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MHMS - Tabbed Interface</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons (Optional but Recommended) -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #1e2125; /* Dark background */
+            --surface-color: #2a2d31; /* Slightly lighter surface for cards */
+            --primary-color: #08d9d6; /* Bright Teal */
+            --primary-hover: #06b6b4;
+            --text-color: #e0e0e0; /* Light text */
+            --text-muted: #9e9e9e; /* Muted text/labels */
+            --border-color: #40444a;
+            --error-color: #ff6b6b;
+            --success-color: #6bf19c; /* Lighter green for dark bg */
+            --border-radius: 6px;
+            --transition-speed: 0.2s ease-out;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .app-header {
+            background-color: var(--surface-color);
+            padding: 12px 25px;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+             z-index: 100; /* Keep on top */
+             position: sticky; /* Make header sticky */
+             top: 0;
+        }
+         .app-header h1 {
+            font-size: 1.5em;
+            font-weight: 500;
+            color: var(--primary-color);
+            margin: 0;
+         }
+         .app-header h1 i {
+             margin-right: 10px;
+             opacity: 0.8;
+         }
+
+
+        .tab-navigation {
+            background-color: var(--surface-color);
+            padding: 0 15px;
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto; /* Allow horizontal scrolling for tabs */
+            white-space: nowrap; /* Prevent tabs from wrapping */
+            scrollbar-width: thin; /* Firefox scrollbar style */
+            scrollbar-color: var(--primary-color) var(--border-color); /* Firefox */
+            position: sticky; /* Stick below header */
+            top: 58px; /* Height of header (adjust if header height changes) */
+            z-index: 99;
+        }
+        /* Webkit scrollbar styling */
+         .tab-navigation::-webkit-scrollbar { height: 5px; }
+         .tab-navigation::-webkit-scrollbar-track { background: var(--border-color); border-radius: 3px; }
+         .tab-navigation::-webkit-scrollbar-thumb { background-color: var(--primary-color); border-radius: 3px; }
+
+
+        .tab-group {
+            display: inline-block; /* Keep groups together */
+            border-right: 1px solid var(--border-color);
+            padding-right: 10px;
+            margin-right: 10px;
+        }
+        .tab-group:last-child {
+            border-right: none;
+             margin-right: 0;
+            padding-right: 0;
+        }
+        /* Hide group border on small screens if desired */
+        /* @media (max-width: 768px) { .tab-group { border-right: none; margin-right: 0; } } */
+
+        .tab-button {
+            display: inline-flex; /* Use inline-flex for content alignment */
+             align-items: center; /* Align icon and text vertically */
+             gap: 8px; /* Space between icon and text */
+            padding: 12px 15px; /* Adjust padding */
+            margin: 0 2px;
+            cursor: pointer;
+            border: none;
+            border-bottom: 3px solid transparent; /* Indicator line */
+            background-color: transparent;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color var(--transition-speed), border-color var(--transition-speed);
+            white-space: nowrap; /* Prevent text wrapping within button */
+        }
+
+        .tab-button:hover {
+            color: var(--text-color);
+        }
+
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            font-weight: 600;
+        }
+         .tab-button i { /* Icon style */
+            font-size: 1em; /* Make icon slightly smaller than text */
+             opacity: 0.8;
+         }
+
+
+        .tab-content {
+            padding: 30px 25px; /* Add padding around the content cards */
+            flex-grow: 1; /* Allow content to take remaining space */
+             background-color: var(--bg-color); /* Ensure main background color */
+        }
+
+        .content-section { /* Replaces the old .card concept visually */
+            background-color: var(--surface-color);
+            border-radius: var(--border-radius);
+            /* border: 1px solid var(--border-color); */ /* Optional: Add subtle border */
+            padding: 25px;
+            margin-bottom: 30px;
+             box-shadow: 0 3px 6px rgba(0,0,0,0.1); /* Softer shadow */
+        }
+         /* Apply display none/block to the section itself */
+         .content-section.hidden {
+            display: none;
+         }
+
+
+        .content-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-size: 1.2em;
+            font-weight: 500;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+             align-items: center;
+             gap: 10px;
+        }
+         .content-section h3 i {
+             opacity: 0.8;
+         }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 400; /* Lighter label weight */
+            color: var(--text-muted);
+            font-size: 0.85em;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="email"],
+        .form-group input[type="password"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-color); /* Slightly darker input background */
+            border-radius: var(--border-radius);
+            font-size: 0.95em;
+            color: var(--text-color);
+            transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(8, 217, 214, 0.3); /* Focus glow */
+            outline: none;
+        }
+
+        /* Specific styles for select in dark mode */
+         .form-group select {
+             /* Add arrow style if needed, or rely on browser default */
+             appearance: none; /* Remove default arrow */
+             background-image: url('data:image/svg+xml;utf8,<svg fill="%239e9e9e" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+             background-position: right 10px center;
+             background-size: 18px;
+             padding-right: 35px; /* Make space for arrow */
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 10px 22px;
+            background: var(--primary-color);
+            color: #111; /* Darker text on bright button */
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600; /* Bolder button text */
+            font-size: 0.95em;
+            transition: background-color var(--transition-speed), transform var(--transition-speed);
+            display: inline-flex;
+             align-items: center;
+             gap: 8px;
+        }
+        .btn i {
+             font-size: 1em;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+        .btn:active {
+            transform: translateY(0px);
+        }
+
+
+        .result-box {
+            margin-top: 25px;
+            padding: 15px 20px;
+            background: var(--bg-color); /* Slightly darker result box */
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            min-height: 70px;
+            font-size: 0.9em;
+            color: var(--text-muted);
+        }
+         .result-box:empty::before { /* Placeholder text */
+            content: "Results will appear here...";
+            color: var(--text-muted);
+            font-style: italic;
+         }
+         /* Result message styling */
+         .result-box p, .result-box div { margin-bottom: 8px; color: var(--text-color);}
+         .result-box strong { color: var(--primary-color); font-weight: 500;}
+         .result-box .message { padding: 10px; border-radius: 4px; margin-bottom: 0 !important;}
+         .result-box .message.success { background-color: rgba(107, 241, 156, 0.1); border-left: 3px solid var(--success-color); color: var(--success-color); }
+         .result-box .message.error { background-color: rgba(255, 107, 107, 0.1); border-left: 3px solid var(--error-color); color: var(--error-color); }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .app-header h1 { font-size: 1.3em; }
+            .tab-content { padding: 20px 15px; }
+            .content-section { padding: 20px; }
+            .content-section h3 { font-size: 1.1em; }
+            .app-header { top: 0; } /* Header sticks */
+            .tab-navigation { top: 53px; } /* Adjust sticky top for smaller header */
+             .tab-button { padding: 10px 12px; font-size: 0.85rem; gap: 5px;}
+            .tab-button i { font-size: 0.9em; }
+        }
+        @media (max-width: 480px) {
+             .app-header { padding: 10px 15px; }
+             .app-header h1 { font-size: 1.1em; }
+            .tab-navigation { top: 47px; }
+             .tab-content { padding: 15px 10px; }
+            .btn { padding: 8px 15px; font-size: 0.9em; }
+         }
+
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Application Header -->
+        <header class="app-header">
+            <h1><i class="fas fa-hospital-alt"></i>Hospital Management System</h1>
+            <!-- Optional: User profile/logout -->
+        </header>
+
+        <!-- Tab Navigation -->
+        <nav class="tab-navigation">
+             <!-- Grouping can be optional, removed for cleaner look here but structure kept in CSS -->
+             <!-- Add Room/View -->
+            <button class="tab-button" onclick="showTab('addRoom')" data-tab-id="addRoom"><i class="fas fa-plus-square"></i>Add Room</button>
+            <button class="tab-button" onclick="showTab('viewRoom')" data-tab-id="viewRoom"><i class="fas fa-binoculars"></i>View Room</button>
+             <!-- Worker Add/Search -->
+             <button class="tab-button" onclick="showTab('addWorker')" data-tab-id="addWorker"><i class="fas fa-user-plus"></i>Add Worker</button>
+             <button class="tab-button" onclick="showTab('searchWorker')" data-tab-id="searchWorker"><i class="fas fa-user-magnifying-glass"></i>Search Worker</button>
+            <!-- Hospital -->
+            <button class="tab-button" onclick="showTab('hospitalEntry')" data-tab-id="hospitalEntry"><i class="fas fa-hospital-user"></i>Hospital Entry</button>
+            <button class="tab-button" onclick="showTab('hospitalSearch')" data-tab-id="hospitalSearch"><i class="fas fa-magnifying-glass-location"></i>Hospital Search</button>
+             <!-- Ambulance -->
+            <button class="tab-button" onclick="showTab('ambulanceEntry')" data-tab-id="ambulanceEntry"><i class="fas fa-truck-medical"></i>Ambulance Entry</button>
+            <button class="tab-button" onclick="showTab('ambulanceSearch')" data-tab-id="ambulanceSearch"><i class="fas fa-search-plus"></i>Ambulance Search</button>
+             <!-- Blood -->
+            <button class="tab-button" onclick="showTab('bloodEntry')" data-tab-id="bloodEntry"><i class="fas fa-tint"></i>Blood Entry</button>
+            <button class="tab-button" onclick="showTab('bloodSearch')" data-tab-id="bloodSearch"><i class="fas fa-search-location"></i>Blood Search</button>
+             <!-- Doctor -->
+            <button class="tab-button" onclick="showTab('doctorEntry')" data-tab-id="doctorEntry"><i class="fas fa-user-doctor"></i>Doctor Entry</button>
+            <button class="tab-button" onclick="showTab('doctorSearch')" data-tab-id="doctorSearch"><i class="fas fa-stethoscope"></i>Doctor Search</button>
+            <!-- Patient -->
+             <button class="tab-button" onclick="showTab('patientSymptom')" data-tab-id="patientSymptom"><i class="fas fa-file-medical"></i>Patient Symptom</button>
+            <button class="tab-button" onclick="showTab('doctorSearchPatient')" data-tab-id="doctorSearchPatient"><i class="fas fa-user-secret"></i>Doc: Find Patient</button>
+            <button class="tab-button" onclick="showTab('patientPrescription')" data-tab-id="patientPrescription"><i class="fas fa-receipt"></i>Patient: My Rx</button>
+             <!-- Doctor Actions -->
+             <button class="tab-button" onclick="showTab('doctorPrescription')" data-tab-id="doctorPrescription"><i class="fas fa-file-prescription"></i>Doc: Add Rx</button>
+             <!-- Other -->
+            <button class="tab-button" onclick="showTab('medex')" data-tab-id="medex"><i class="fas fa-pills"></i>Medex Search</button>
+        </nav>
+
+        <!-- Main Content Area for Tabs -->
+        <main class="tab-content">
+
+             <!-- Sections moved here, use 'content-section' class -->
+             <!-- IMPORTANT: Each section now has 'content-section' and 'hidden' classes -->
+
+             <!-- Add Room Section -->
+            <div id="addRoom" class="content-section hidden">
+                <h3><i class="fas fa-door-open"></i> Add Room Information</h3>
+                 <!-- Form groups remain the same -->
+                <div class="form-group">
+                    <label for="roomNumber">Room Number:</label>
+                    <input type="text" id="roomNumber">
+                </div>
+                <div class="form-group">
+                    <label for="roomType">Room Type:</label>
+                    <select id="roomType">
+                        <option value="AC">AC</option>
+                        <option value="Non-AC">Non-AC</option>
+                         <option value="ICU">ICU</option>
+                         <option value="Cabin">Cabin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="roomAvailability">Availability:</label>
+                    <select id="roomAvailability">
+                        <option value="Available">Available</option>
+                        <option value="Occupied">Occupied</option>
+                         <option value="Maintenance">Maintenance</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="roomFor">Intended For (e.g., Ward, Single Patient):</label>
+                    <input type="text" id="roomFor">
+                </div>
+                <div class="form-group">
+                    <label for="roomCapacity">Bed Capacity:</label>
+                    <input type="number" id="roomCapacity">
+                </div>
+                <button class="btn" onclick="addRoom()"><i class="fas fa-plus-circle"></i> Submit</button>
+                <div class="result-box" id="roomResult"></div>
+            </div>
+
+            <!-- View Room Section -->
+            <div id="viewRoom" class="content-section hidden">
+                <h3><i class="fas fa-binoculars"></i> View Room Information</h3>
+                 <div class="form-group">
+                    <label for="searchRoomNumber">Room Number:</label>
+                    <input type="text" id="searchRoomNumber">
+                </div>
+                <button class="btn" onclick="viewRoom()"><i class="fas fa-search"></i> Search</button>
+                <div class="result-box" id="viewRoomResult"></div>
+            </div>
+
+            <!-- Add Worker Section -->
+            <div id="addWorker" class="content-section hidden">
+                <h3><i class="fas fa-user-plus"></i> Add Worker Information</h3>
+                 <div class="form-group">
+                    <label for="workerId">Worker ID:</label>
+                    <input type="text" id="workerId">
+                </div>
+                <div class="form-group">
+                    <label for="workerName">Name:</label>
+                    <input type="text" id="workerName">
+                </div>
+                <div class="form-group">
+                    <label for="jobTitle">Job Title:</label>
+                    <input type="text" id="jobTitle">
+                </div>
+                <div class="form-group">
+                    <label for="workingHours">Working Hours:</label>
+                    <input type="text" id="workingHours">
+                </div>
+                <div class="form-group">
+                    <label for="specialization">Specialization (if doctor):</label>
+                    <input type="text" id="specialization">
+                </div>
+                <div class="form-group">
+                    <label for="contactNumber">Contact Number:</label>
+                    <input type="text" id="contactNumber">
+                </div>
+                <button class="btn" onclick="addWorker()"><i class="fas fa-plus-circle"></i> Submit</button>
+                <div class="result-box" id="workerResult"></div>
+            </div>
+
+             <!-- Search Worker Section -->
+            <div id="searchWorker" class="content-section hidden">
+                <h3><i class="fas fa-user-magnifying-glass"></i> Search Worker</h3>
+                 <div class="form-group">
+                    <label for="searchWorkerId">Worker ID:</label>
+                    <input type="text" id="searchWorkerId">
+                </div>
+                <button class="btn" onclick="searchWorker()"><i class="fas fa-search"></i> Search</button>
+                <div class="result-box" id="searchWorkerResult"></div>
+            </div>
+
+             <!-- Hospital Entry -->
+            <div id="hospitalEntry" class="content-section hidden">
+                <h3><i class="fas fa-hospital-user"></i> Hospital Data Entry</h3>
+                 <div class="form-group">
+                    <label for="hospitalName">Name:</label>
+                    <input type="text" id="hospitalName">
+                </div>
+                <div class="form-group">
+                    <label for="hospitalLocation">Location:</label>
+                    <input type="text" id="hospitalLocation">
+                </div>
+                <div class="form-group">
+                    <label for="hospitalContact">Contact:</label>
+                    <input type="text" id="hospitalContact">
+                </div>
+                <div class="form-group">
+                    <label for="hospitalAvailability">Availability:</label>
+                    <select id="hospitalAvailability">
+                        <option value="Available">Available</option>
+                         <option value="Emergency Only">Emergency Only</option>
+                         <option value="Full Capacity">Full Capacity</option>
+                         <option value="Closed">Closed</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="addHospital()"><i class="fas fa-plus-circle"></i> Submit</button>
+                <div class="result-box" id="hospitalEntryResult"></div>
+            </div>
+
+             <!-- Hospital Search -->
+            <div id="hospitalSearch" class="content-section hidden">
+                <h3><i class="fas fa-magnifying-glass-location"></i> Search Hospital</h3>
+                 <div class="form-group">
+                    <label for="searchHospitalLocation">Location or Name:</label>
+                    <input type="text" id="searchHospitalLocation">
+                </div>
+                <button class="btn" onclick="searchHospital()"><i class="fas fa-search"></i> Search</button>
+                <div class="result-box" id="hospitalSearchResult"></div>
+            </div>
+
+             <!-- Ambulance Entry -->
+            <div id="ambulanceEntry" class="content-section hidden">
+                <h3><i class="fas fa-truck-medical"></i> Ambulance Entry</h3>
+                 <div class="form-group">
+                    <label for="ambulanceName">Provider/Service Name:</label>
+                    <input type="text" id="ambulanceName">
+                </div>
+                <div class="form-group">
+                    <label for="driverName">Driver Name (Optional):</label>
+                    <input type="text" id="driverName">
+                </div>
+                <div class="form-group">
+                    <label for="ambulanceContact">Contact Number:</label>
+                    <input type="text" id="ambulanceContact">
+                </div>
+                <div class="form-group">
+                    <label for="ambulanceLocation">Current Location / Base:</label>
+                    <input type="text" id="ambulanceLocation">
+                </div>
+                <div class="form-group">
+                    <label for="ambulanceAvailability">Availability Status:</label>
+                    <select id="ambulanceAvailability">
+                        <option value="Available">Available</option>
+                        <option value="On Duty">On Duty</option>
+                         <option value="Unavailable">Unavailable</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ambulanceStatus">Type (AC/Non-AC, BLS/ALS):</label>
+                    <input type="text" id="ambulanceStatus">
+                </div>
+                <button class="btn" onclick="addAmbulance()"><i class="fas fa-plus-circle"></i> Submit</button>
+                <div class="result-box" id="ambulanceEntryResult"></div>
+            </div>
+
+             <!-- Ambulance Search -->
+            <div id="ambulanceSearch" class="content-section hidden">
+                <h3><i class="fas fa-search-plus"></i> Search Ambulance</h3>
+                 <div class="form-group">
+                    <label for="searchAmbulanceLocation">Location:</label>
+                    <input type="text" id="searchAmbulanceLocation">
+                </div>
+                <button class="btn" onclick="searchAmbulance()"><i class="fas fa-search"></i> Search</button>
+                <div class="result-box" id="ambulanceSearchResult"></div>
+            </div>
+
+            <!-- Blood Entry -->
+            <div id="bloodEntry" class="content-section hidden">
+                 <h3><i class="fas fa-tint"></i> Blood Bank Entry</h3>
+                 <div class="form-group">
+                    <label for="bloodGroup">Blood Group:</label>
+                    <select id="bloodGroup">
+                        <option value="A+">A+</option> <option value="A-">A-</option>
+                        <option value="B+">B+</option> <option value="B-">B-</option>
+                        <option value="AB+">AB+</option> <option value="AB-">AB-</option>
+                        <option value="O+">O+</option> <option value="O-">O-</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bloodBankName">Bank Name/Hospital:</label>
+                    <input type="text" id="bloodBankName">
+                </div>
+                <div class="form-group">
+                    <label for="bloodContact">Contact:</label>
+                    <input type="text" id="bloodContact">
+                </div>
+                <div class="form-group">
+                    <label for="bloodLocation">Location:</label>
+                    <input type="text" id="bloodLocation">
+                </div>
+                <div class="form-group">
+                    <label for="bloodAvailability">Stock Level:</label>
+                    <select id="bloodAvailability">
+                        <option value="Available">Available</option>
+                         <option value="Low Stock">Low Stock</option>
+                        <option value="Unavailable">Unavailable</option>
+                    </select>
+                </div>
+                 <div class="form-group">
+                     <label for="bloodUnits">Units Available (Optional):</label>
+                     <input type="number" id="bloodUnits"> <!-- Changed ID slightly -->
+                 </div>
+                <button class="btn" onclick="addBlood()"><i class="fas fa-plus-circle"></i> Submit</button>
+                <div class="result-box" id="bloodEntryResult"></div>
+            </div>
+
+            <!-- Blood Search -->
+            <div id="bloodSearch" class="content-section hidden">
+                 <h3><i class="fas fa-search-location"></i> Search Blood</h3>
+                 <div class="form-group">
+                     <label for="searchBloodLocation">Location or Bank Name:</label>
+                    <input type="text" id="searchBloodLocation">
+                 </div>
+                <div class="form-group">
+                     <label for="searchBloodGroup">Blood Group (Optional):</label>
+                     <select id="searchBloodGroup">
+                         <option value="">Any</option>
+                         <option value="A+">A+</option><option value="A-">A-</option>
+                         <option value="B+">B+</option><option value="B-">B-</option>
+                         <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                         <option value="O+">O+</option><option value="O-">O-</option>
+                     </select>
+                 </div>
+                <button class="btn" onclick="searchBlood()"><i class="fas fa-search"></i> Search</button>
+                <div class="result-box" id="bloodSearchResult"></div>
+            </div>
+
+            <!-- Doctor Entry -->
+            <div id="doctorEntry" class="content-section hidden">
+                <h3><i class="fas fa-user-doctor"></i> Doctor Entry</h3>
+                 <div class="form-group">
+                    <label for="doctorName">Name:</label>
+                    <input type="text" id="doctorName">
+                </div>
+                <div class="form-group">
+                    <label for="doctorSpecialization">Specialization:</label>
+                    <input type="text" id="doctorSpecialization">
+                </div>
+                <div class="form-group">
+                    <label for="doctorContact">Contact:</label>
+                    <input type="text" id="doctorContact">
+                </div>
+                <div class="form-group">
+                    <label for="doctorLocation">Clinic/Hospital Location:</label>
+                    <input type="text" id="doctorLocation">
+                </div>
+                <div class="form-group">
+                     <label for="doctorAvailabilityText">Availability / Schedule:</label> <!-- Changed ID to avoid conflict if select used -->
+                     <input type="text" id="doctorAvailabilityText">
+                </div>
+                <div class="form-group">
+                    <label for="doctorFees">Fees (Approx):</label>
+                    <input type="number" id="doctorFees">
+                </div>
+                 <div class="form-group">
+                     <label for="doctorStatusText">Status/Notes (e.g., New patients welcome):</label> <!-- Changed ID -->
+                    <input type="text" id="doctorStatusText">
+                </div>
+                <button class="btn" onclick="addDoctor()"><i class="fas fa-plus-circle"></i> Submit</button>
+                <div class="result-box" id="doctorEntryResult"></div>
+            </div>
+
+            <!-- Doctor Search -->
+            <div id="doctorSearch" class="content-section hidden">
+                <h3><i class="fas fa-stethoscope"></i> Search Doctor</h3>
+                 <div class="form-group">
+                     <label for="searchDoctorLocation">Location or Name:</label>
+                    <input type="text" id="searchDoctorLocation">
+                </div>
+                <div class="form-group">
+                    <label for="searchDoctorSpecialization">Specialization (Optional):</label>
+                    <input type="text" id="searchDoctorSpecialization">
+                </div>
+                <button class="btn" onclick="searchDoctor()"><i class="fas fa-search"></i> Search</button>
+                <div class="result-box" id="doctorSearchResult"></div>
+            </div>
+
+             <!-- Patient Symptom -->
+            <div id="patientSymptom" class="content-section hidden">
+                <h3><i class="fas fa-file-medical"></i> Patient Symptom Report</h3>
+                 <div class="form-group">
+                     <label for="patientId">Patient ID (Auto-generated if blank):</label>
+                    <input type="text" id="patientId">
+                </div>
+                <div class="form-group">
+                    <label for="patientName">Name:</label>
+                    <input type="text" id="patientName">
+                </div>
+                <div class="form-group">
+                    <label for="patientAge">Age:</label>
+                    <input type="number" id="patientAge">
+                </div>
+                 <div class="form-group">
+                     <label for="patientGender">Gender:</label>
+                     <select id="patientGender">
+                         <option value="Male">Male</option>
+                         <option value="Female">Female</option>
+                         <option value="Other">Other</option>
+                         <option value="Prefer not to say">Prefer not to say</option>
+                     </select>
+                 </div>
+                <div class="form-group">
+                    <label for="patientSymptomText">Symptom(s):</label> <!-- Changed ID -->
+                     <textarea id="patientSymptomText"></textarea>
+                </div>
+                <button class="btn" onclick="reportSymptom()"><i class="fas fa-paper-plane"></i> Submit</button>
+                <div class="result-box" id="symptomResult"></div>
+            </div>
+
+            <!-- Doctor Search Patient -->
+            <div id="doctorSearchPatient" class="content-section hidden">
+                <h3><i class="fas fa-user-secret"></i> Doctor: Search Patient</h3>
+                 <div class="form-group">
+                     <label for="doctorSearchPatientId">Patient ID:</label>
+                    <input type="text" id="doctorSearchPatientId">
+                </div>
+                <button class="btn" onclick="doctorSearchPatient()"><i class="fas fa-search"></i> Search</button>
+                <div class="result-box" id="doctorSearchPatientResult"></div>
+            </div>
+
+             <!-- Doctor Prescription -->
+            <div id="doctorPrescription" class="content-section hidden">
+                <h3><i class="fas fa-file-prescription"></i> Doctor: Add Prescription</h3>
+                 <div class="form-group">
+                    <label for="prescriptionPatientId">Patient ID:</label>
+                    <input type="text" id="prescriptionPatientId">
+                </div>
+                <div class="form-group">
+                    <label for="medicineName">Medicine Name:</label>
+                    <input type="text" id="medicineName">
+                </div>
+                 <div class="form-group">
+                    <label for="medicineDose">Dosage:</label>
+                    <input type="text" id="medicineDose">
+                </div>
+                 <div class="form-group">
+                     <label for="medicineTime">Timing / Frequency:</label>
+                    <input type="text" id="medicineTime">
+                </div>
+                 <div class="form-group">
+                    <label for="medicineDays">Duration:</label>
+                    <input type="text" id="medicineDays">
+                </div>
+                <div class="form-group">
+                     <label for="medicineNotes">Notes (e.g., Before/After Food):</label> <!-- Changed ID -->
+                     <textarea id="medicineNotes"></textarea>
+                </div>
+                <button class="btn" onclick="addPrescription()"><i class="fas fa-save"></i> Save Prescription</button>
+                <div class="result-box" id="prescriptionResult"></div>
+            </div>
+
+             <!-- Patient Prescription -->
+            <div id="patientPrescription" class="content-section hidden">
+                <h3><i class="fas fa-receipt"></i> Patient: View My Prescription</h3>
+                 <div class="form-group">
+                    <label for="patientPrescriptionId">Your Patient ID:</label>
+                    <input type="text" id="patientPrescriptionId">
+                </div>
+                <button class="btn" onclick="viewPrescription()"><i class="fas fa-eye"></i> View</button>
+                <div class="result-box" id="patientPrescriptionResult"></div>
+            </div>
+
+             <!-- Medex Redirect -->
+            <div id="medex" class="content-section hidden">
+                <h3><i class="fas fa-pills"></i> Search Medicine Info (Medex)</h3>
+                 <p style="color: var(--text-muted); margin-bottom: 15px;">Redirects to Medex Bangladesh for detailed drug information.</p>
+                 <div class="form-group">
+                    <label for="medicineRedirect">Medicine Name:</label>
+                    <input type="text" id="medicineRedirect">
+                </div>
+                <button class="btn" onclick="redirectMedex()"><i class="fas fa-external-link-alt"></i> Search on Medex</button>
+                <div class="result-box" id="medexResult"></div>
+            </div>
+
+        </main> <!-- End Tab Content -->
+    </div> <!-- End App Container -->
+
+    <script>
+        // --- JAVASCRIPT LOGIC (SHOULD BE NEARLY IDENTICAL) ---
+
+         // Data storage (Use a single object for simplicity)
+         const db = {
+            rooms: [],
+            workers: [],
+            hospitals: [],
+            ambulances: [],
+            bloodBanks: [],
+            doctors: [],
+            patients: [],
+            prescriptions: []
+        };
+
+
+        // Tab switching function
+        function showTab(sectionId) {
+            // Hide all content sections
+             document.querySelectorAll('.tab-content .content-section').forEach(section => section.classList.add('hidden'));
+
+             // Show the selected section
+             const activeSection = document.getElementById(sectionId);
+             if(activeSection) {
+                 activeSection.classList.remove('hidden');
+                  // Clear previous results when switching tabs
+                 const resultBox = activeSection.querySelector('.result-box');
+                 if (resultBox) resultBox.innerHTML = '';
+            } else {
+                 console.error("Section not found:", sectionId);
+                 return;
+            }
+
+             // Update active state for tab buttons
+            document.querySelectorAll('.tab-navigation .tab-button').forEach(button => {
+                if (button.getAttribute('onclick') === `showTab('${sectionId}')` || button.dataset.tabId === sectionId) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        }
+
+         // Display results utility (can be enhanced like before)
+        function displayResult(elementId, message, isSuccess = true) {
+            const resultDiv = document.getElementById(elementId);
+            if (!resultDiv) return;
+
+            const messageClass = isSuccess ? 'success' : 'error';
+
+            // Basic formatting - Adapt based on desired look
+             if (typeof message === 'object') {
+                let html = '';
+                for (const key in message) {
+                     const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+                     html += `<p><strong>${formattedKey}:</strong> ${message[key] || 'N/A'}</p>`;
+                 }
+                 resultDiv.innerHTML = html; // Display as paragraphs
+             } else {
+                resultDiv.innerHTML = `<div class="message ${messageClass}">${message}</div>`; // Display success/error with specific class
+            }
+        }
+
+        // Helper to display list results (e.g., searches)
+         function displayListResult(elementId, dataArray, fieldsToShow, messageIfEmpty = "No records found.") {
+            const resultDiv = document.getElementById(elementId);
+            if (!resultDiv) return;
+
+            if (!dataArray || dataArray.length === 0) {
+                displayResult(elementId, messageIfEmpty, false); // Show error message if empty
+                return;
+            }
+
+            let html = '';
+            dataArray.forEach(item => {
+                 html += '<div style="border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 10px;">';
+                fieldsToShow.forEach(fieldInfo => {
+                    let key, label;
+                     if (typeof fieldInfo === 'object') {
+                         key = Object.keys(fieldInfo)[0];
+                         label = Object.values(fieldInfo)[0];
+                     } else {
+                         key = fieldInfo;
+                         label = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+                     }
+
+                     let value = item[key] || 'N/A';
+                     // Example formatting
+                     if (key === 'fees' && value !== 'N/A') value = `~ ${value} Tk`;
+                     if (key === 'availability' && item.units && key === 'availability') { // Combine blood units/availability
+                         value += ` (${item.units} Units)`;
+                     }
+
+                    html += `<p><strong style="min-width: 120px; display: inline-block;">${label}:</strong> ${value}</p>`;
+                 });
+                 html += '</div>';
+            });
+             // Remove last border
+            if(html) {
+                const lastDivEnd = html.lastIndexOf('</div>');
+                const lastBorder = html.lastIndexOf('border-bottom: 1px solid var(--border-color);');
+                if(lastDivEnd > lastBorder && lastBorder > -1) {
+                    html = html.substring(0, lastBorder) + html.substring(lastBorder + 'border-bottom: 1px solid var(--border-color);'.length);
+                    const lastPadding = html.lastIndexOf('padding-bottom: 10px;');
+                    html = html.substring(0, lastPadding) + html.substring(lastPadding + 'padding-bottom: 10px;'.length);
+                 }
+            }
+            resultDiv.innerHTML = html;
+         }
+
+         // Simple Validation Helper
+         function validateRequired(fields, sectionId) {
+            for (const fieldId in fields) {
+                 const input = document.getElementById(fieldId);
+                 if (!input || !input.value.trim()) {
+                    displayResult(`${sectionId}Result`, `${fields[fieldId]} is required.`, false);
+                    input?.focus();
+                    return false;
+                 }
+            }
+            return true;
+        }
+
+         // Clear Form Helper
+         function clearForm(sectionId) {
+             const form = document.getElementById(sectionId);
+             if (form) {
+                 form.querySelectorAll('input[type="text"], input[type="number"], input[type="email"], textarea').forEach(el => el.value = '');
+                 form.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+             }
+         }
+
+
+        // --- CORE FUNCTIONALITY (Functions like addRoom, viewRoom, etc.) ---
+         // These functions remain largely the same logically,
+         // but use the 'db' object and the updated display functions.
+         // IDs for form elements might need slight adjustments if changed above (e.g., patientSymptomText).
+
+        // Example: Add Room adaptation
+        function addRoom() {
+             if (!validateRequired({ roomNumber: 'Room Number', roomCapacity: 'Capacity' }, 'room')) return;
+             const roomData = {
+                 number: document.getElementById('roomNumber').value,
+                 type: document.getElementById('roomType').value,
+                 availability: document.getElementById('roomAvailability').value,
+                 roomFor: document.getElementById('roomFor').value || 'General',
+                 capacity: document.getElementById('roomCapacity').value
+            };
+            db.rooms.push(roomData);
+             displayResult('roomResult', `Room ${roomData.number} added successfully!`, true);
+             clearForm('addRoom');
+             console.log("Rooms DB:", db.rooms); // For debugging
+         }
+
+        // Example: View Room adaptation
+        function viewRoom() {
+             if (!validateRequired({ searchRoomNumber: 'Room Number' }, 'viewRoom')) return;
+             const searchNumber = document.getElementById('searchRoomNumber').value;
+             const room = db.rooms.find(r => r.number === searchNumber);
+            if (room) {
+                displayResult('viewRoomResult', {
+                     Number: room.number,
+                     Type: room.type,
+                     Availability: room.availability,
+                     'Intended For': room.roomFor,
+                     Capacity: `${room.capacity} Bed(s)`
+                 }, true); // Treat object display as success for styling
+            } else {
+                displayResult('viewRoomResult', `Room number "${searchNumber}" not found.`, false);
+            }
+        }
+
+        // ... include all other functions (addWorker, searchWorker, addHospital, ...)
+        // Make sure to update element IDs if they were changed in the HTML section (e.g., patientSymptomText)
+         // Update displayResult calls and use displayListResult for searches.
+
+         // ---- START OF OTHER FUNCTIONS (Adapt similarly) ----
+
+         function addWorker() {
+             if (!validateRequired({ workerId: 'Worker ID', workerName: 'Name', jobTitle: 'Job Title' }, 'worker')) return;
+             const workerData = {
+                 id: document.getElementById('workerId').value,
+                 name: document.getElementById('workerName').value,
+                 jobTitle: document.getElementById('jobTitle').value,
+                 workingHours: document.getElementById('workingHours').value,
+                 specialization: document.getElementById('specialization').value || 'N/A',
+                 contact: document.getElementById('contactNumber').value
+             };
+             db.workers.push(workerData);
+             displayResult('workerResult', `Worker ${workerData.name} (ID: ${workerData.id}) added.`, true);
+             clearForm('addWorker');
+         }
+
+         function searchWorker() {
+             if (!validateRequired({ searchWorkerId: 'Worker ID' }, 'searchWorker')) return;
+             const searchId = document.getElementById('searchWorkerId').value;
+             const worker = db.workers.find(w => w.id === searchId);
+             if (worker) {
+                 displayResult('searchWorkerResult', {
+                     ID: worker.id, Name: worker.name, 'Job Title': worker.jobTitle,
+                     'Hours': worker.workingHours, Specialization: worker.specialization, Contact: worker.contact
+                 }, true);
+             } else {
+                 displayResult('searchWorkerResult', `Worker ID "${searchId}" not found.`, false);
+             }
+         }
+
+         function addHospital() {
+            if (!validateRequired({ hospitalName: 'Name', hospitalLocation: 'Location', hospitalContact: 'Contact'}, 'hospitalEntry')) return;
+             const hospitalData = {
+                 name: document.getElementById('hospitalName').value,
+                 location: document.getElementById('hospitalLocation').value,
+                 contact: document.getElementById('hospitalContact').value,
+                 availability: document.getElementById('hospitalAvailability').value
+            };
+             db.hospitals.push(hospitalData);
+             displayResult('hospitalEntryResult', `Hospital "${hospitalData.name}" added.`, true);
+            clearForm('hospitalEntry');
+         }
+
+        function searchHospital() {
+            if (!validateRequired({ searchHospitalLocation: 'Location or Name'}, 'hospitalSearch')) return;
+            const searchTerm = document.getElementById('searchHospitalLocation').value.toLowerCase();
+             const filtered = db.hospitals.filter(h =>
+                 h.location.toLowerCase().includes(searchTerm) ||
+                 h.name.toLowerCase().includes(searchTerm)
+             );
+            displayListResult('hospitalSearchResult', filtered, ['name', 'location', 'contact', 'availability'], "No hospitals found.");
+        }
+
+        function addAmbulance() {
+             if (!validateRequired({ ambulanceName: 'Provider Name', ambulanceContact: 'Contact', ambulanceLocation: 'Location'}, 'ambulanceEntry')) return;
+             const ambulanceData = {
+                name: document.getElementById('ambulanceName').value,
+                driver: document.getElementById('driverName').value || 'N/A',
+                contact: document.getElementById('ambulanceContact').value,
+                 location: document.getElementById('ambulanceLocation').value,
+                 availability: document.getElementById('ambulanceAvailability').value,
+                status: document.getElementById('ambulanceStatus').value || 'N/A'
+            };
+            db.ambulances.push(ambulanceData);
+             displayResult('ambulanceEntryResult', `Ambulance service "${ambulanceData.name}" added.`, true);
+             clearForm('ambulanceEntry');
+        }
+
+        function searchAmbulance() {
+            if (!validateRequired({ searchAmbulanceLocation: 'Location'}, 'ambulanceSearch')) return;
+             const location = document.getElementById('searchAmbulanceLocation').value.toLowerCase();
+            const filtered = db.ambulances.filter(a => a.location.toLowerCase().includes(location));
+            displayListResult('ambulanceSearchResult', filtered, [{name:'Provider'}, 'driver', 'contact', 'location', 'availability', {status:'Type'}], "No ambulances found.");
+        }
+
+         function addBlood() {
+             if (!validateRequired({ bloodBankName: 'Bank Name', bloodContact: 'Contact', bloodLocation: 'Location'}, 'bloodEntry')) return;
+            const bloodData = {
+                 bankName: document.getElementById('bloodBankName').value,
+                 group: document.getElementById('bloodGroup').value,
+                units: document.getElementById('bloodUnits').value || 'N/A', // Changed ID used here
+                contact: document.getElementById('bloodContact').value,
+                 location: document.getElementById('bloodLocation').value,
+                 availability: document.getElementById('bloodAvailability').value
+             };
+             db.bloodBanks.push(bloodData);
+             displayResult('bloodEntryResult', `Blood info for ${bloodData.group} at ${bloodData.bankName} added.`, true);
+             clearForm('bloodEntry');
+         }
+
+         function searchBlood() {
+             if (!validateRequired({ searchBloodLocation: 'Location or Bank Name'}, 'bloodSearch')) return;
+             const searchTerm = document.getElementById('searchBloodLocation').value.toLowerCase();
+            const group = document.getElementById('searchBloodGroup').value;
+            const filtered = db.bloodBanks.filter(b =>
+                 (b.location.toLowerCase().includes(searchTerm) || b.bankName.toLowerCase().includes(searchTerm)) &&
+                 (!group || b.group === group)
+            );
+            // Show units combined with availability
+            displayListResult('bloodSearchResult', filtered, [{bankName: 'Bank/Hospital'}, 'group', 'contact', 'location', 'availability'], "No blood banks found.");
+        }
+
+        function addDoctor() {
+             if (!validateRequired({ doctorName: 'Name', doctorSpecialization: 'Specialization', doctorContact: 'Contact', doctorLocation: 'Location'}, 'doctorEntry')) return;
+             const doctorData = {
+                 name: document.getElementById('doctorName').value,
+                specialization: document.getElementById('doctorSpecialization').value,
+                 contact: document.getElementById('doctorContact').value,
+                 location: document.getElementById('doctorLocation').value,
+                 availability: document.getElementById('doctorAvailabilityText').value || 'N/A', // Changed ID
+                 fees: document.getElementById('doctorFees').value || 'N/A',
+                status: document.getElementById('doctorStatusText').value || 'N/A' // Changed ID
+             };
+             db.doctors.push(doctorData);
+             displayResult('doctorEntryResult', `Dr. ${doctorData.name} added.`, true);
+             clearForm('doctorEntry');
+        }
+
+         function searchDoctor() {
+            if (!validateRequired({ searchDoctorLocation: 'Location or Name'}, 'doctorSearch')) return;
+             const searchTerm = document.getElementById('searchDoctorLocation').value.toLowerCase();
+             const specialization = document.getElementById('searchDoctorSpecialization').value.toLowerCase();
+             const filtered = db.doctors.filter(d =>
+                (d.location.toLowerCase().includes(searchTerm) || d.name.toLowerCase().includes(searchTerm)) &&
+                 (!specialization || d.specialization.toLowerCase().includes(specialization))
+             );
+             displayListResult('doctorSearchResult', filtered, ['name', 'specialization', 'location', {availability: 'Schedule'}, 'contact', 'fees', {status: 'Info'}], "No doctors found.");
+        }
+
+        function reportSymptom() {
+            let patientId = document.getElementById('patientId').value.trim();
+             if (!patientId) {
+                 patientId = 'PAT' + Date.now().toString().slice(-6);
+                 document.getElementById('patientId').value = patientId;
+             }
+
+            if (!validateRequired({ patientName: 'Name', patientSymptomText: 'Symptoms' }, 'patientSymptom')) return;
+
+             const patientData = {
+                id: patientId,
+                 name: document.getElementById('patientName').value,
+                 age: document.getElementById('patientAge').value,
+                gender: document.getElementById('patientGender').value,
+                symptom: document.getElementById('patientSymptomText').value, // Changed ID
+                timestamp: new Date().toLocaleString()
+             };
+
+            const existingPatientIndex = db.patients.findIndex(p => p.id === patientData.id);
+             if (existingPatientIndex > -1) {
+                 db.patients[existingPatientIndex].symptom += "\n\nUpdate (" + patientData.timestamp + "):\n" + patientData.symptom;
+                 db.patients[existingPatientIndex].timestamp = patientData.timestamp;
+                 displayResult('symptomResult', `Symptoms updated for Patient ID: ${patientData.id}.`, true);
+             } else {
+                 db.patients.push(patientData);
+                 displayResult('symptomResult', `Symptom report submitted successfully! Patient ID is: ${patientData.id}`, true);
+             }
+             // Optionally clear parts of the form but leave ID
+             // clearForm('patientSymptom');
+         }
+
+        function doctorSearchPatient() {
+             if (!validateRequired({ doctorSearchPatientId: 'Patient ID' }, 'doctorSearchPatient')) return;
+            const patientId = document.getElementById('doctorSearchPatientId').value;
+            const patient = db.patients.find(p => p.id === patientId);
+             if (patient) {
+                 displayResult('doctorSearchPatientResult', {
+                     ID: patient.id, Name: patient.name, Age: patient.age || 'N/A',
+                     Gender: patient.gender, Symptoms: patient.symptom, 'Last Reported': patient.timestamp
+                 }, true);
+            } else {
+                displayResult('doctorSearchPatientResult', `Patient ID "${patientId}" not found.`, false);
+             }
+        }
+
+        function addPrescription() {
+            if (!validateRequired({ prescriptionPatientId: 'Patient ID', medicineName: 'Medicine', medicineTime: 'Timing', medicineDays: 'Duration' }, 'doctorPrescription')) return;
+             const patientId = document.getElementById('prescriptionPatientId').value;
+             const patientExists = db.patients.some(p => p.id === patientId);
+            if (!patientExists) {
+                 displayResult('prescriptionResult', `Patient ID ${patientId} not found. Verify ID or add patient data.`, false);
+                 return;
+            }
+
+             const prescriptionData = {
+                p_id: Date.now(), patientId: patientId,
+                medicine: document.getElementById('medicineName').value,
+                 dose: document.getElementById('medicineDose').value || 'N/A',
+                 time: document.getElementById('medicineTime').value,
+                 days: document.getElementById('medicineDays').value,
+                notes: document.getElementById('medicineNotes').value || 'N/A', // Changed ID
+                prescribedDate: new Date().toLocaleDateString()
+             };
+            db.prescriptions.push(prescriptionData);
+             displayResult('prescriptionResult', 'Prescription saved successfully!', true);
+             clearForm('doctorPrescription');
+        }
+
+         function viewPrescription() {
+             if (!validateRequired({ patientPrescriptionId: 'Patient ID' }, 'patientPrescription')) return;
+            const patientId = document.getElementById('patientPrescriptionId').value;
+             const patient = db.patients.find(p => p.id === patientId);
+            const patientPrescriptions = db.prescriptions.filter(p => p.patientId === patientId).sort((a, b) => b.p_id - a.p_id); // Newest first
+
+             if (!patient) {
+                 displayResult('patientPrescriptionResult', `Patient ID "${patientId}" not found.`, false);
+                 return;
+             }
+             if (patientPrescriptions.length === 0) {
+                displayResult('patientPrescriptionResult', `No prescriptions found for Patient ID: ${patientId}`, false);
+                 return;
+            }
+
+             let html = `<div style="margin-bottom: 15px;">
+                             <p><strong>Patient ID:</strong> ${patient.id}</p>
+                             <p><strong>Name:</strong> ${patient.name}</p>
+                             <p><strong>Age:</strong> ${patient.age || 'N/A'}</p>
+                         </div>
+                         <h4 style="margin-bottom: 10px; color: var(--primary-color);">Prescriptions:</h4>
+                     `;
+
+            patientPrescriptions.forEach(pres => {
+                html += `
+                     <div style="border-left: 3px solid var(--primary-color); padding-left: 15px; margin-bottom: 15px;">
+                         <p><strong>Date:</strong> ${pres.prescribedDate}</p>
+                         <p><strong>Medicine:</strong> ${pres.medicine}</p>
+                        <p><strong>Dosage:</strong> ${pres.dose}</p>
+                         <p><strong>Timing:</strong> ${pres.time}</p>
+                        <p><strong>Duration:</strong> ${pres.days}</p>
+                        <p><strong>Notes:</strong> ${pres.notes}</p>
+                     </div>
+                 `;
+            });
+            // Use displayResult to show raw HTML
+             const resultDiv = document.getElementById('patientPrescriptionResult');
+             if(resultDiv) resultDiv.innerHTML = html; // Directly insert HTML
+         }
+
+        function redirectMedex() {
+            const medicine = document.getElementById('medicineRedirect').value.trim();
+            if (!medicine) {
+                displayResult('medexResult', 'Please enter a medicine name.', false);
+                return;
+            }
+             displayResult('medexResult', `Redirecting to Medex for "${medicine}"...`, true);
+             setTimeout(() => {
+                 window.open(`https://medex.com.bd/brands/search?name=${encodeURIComponent(medicine)}`, '_blank');
+             }, 500);
+         }
+
+         // ---- END OF OTHER FUNCTIONS ----
+
+        // Initial setup: Show the first tab on load
+        document.addEventListener('DOMContentLoaded', () => {
+            showTab('addRoom');
+        });
+
+    </script>
+
+</body>
+</html>

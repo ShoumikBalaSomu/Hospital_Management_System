@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Portal | MedFlow HMS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+             <h1><a href="index.html" style="text-decoration: none; color: inherit;"><i class="fas fa-heart-pulse"></i> MedFlow</a> <small style="font-size: 0.8rem; opacity: 0.6; margin-left: 1rem;">Internal Portal</small></h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="dashboard-layout">
+            <aside class="sidebar">
+                <h3>Management</h3>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#add-room-section" class="nav-link"><i class="fas fa-plus-circle"></i> Add Room</a></li>
+                    <li class="nav-item"><a href="#search-room-section" class="nav-link"><i class="fas fa-search"></i> Search Room</a></li>
+                    <li class="nav-item"><a href="#add-worker-section" class="nav-link"><i class="fas fa-user-plus"></i> Add Worker</a></li>
+                    <li class="nav-item"><a href="#search-worker-section" class="nav-link"><i class="fas fa-id-card"></i> Search Worker</a></li>
+                </ul>
+                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                    <a href="index.html" class="btn btn-secondary" style="width: 100%;"><i class="fas fa-arrow-left"></i> Home</a>
+                </div>
+            </aside>
+
+            <div class="main-content">
+                <section id="add-room-section" class="content-section">
+                    <h2 class="section-title"><i class="fas fa-door-open"></i> Add Room Information</h2>
+                    <form id="add-room-form">
+                        <div class="form-group">
+                            <label for="room-number">Room Number</label>
+                            <input type="text" id="room-number" placeholder="e.g. 101" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="room-type">Room Type (AC/Non-AC)</label>
+                            <input type="text" id="room-type" placeholder="AC / Non-AC" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="room-availability">Room Availability</label>
+                            <input type="text" id="room-availability" placeholder="Available / Occupied" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="room-for">Room For</label>
+                            <input type="text" id="room-for" placeholder="General / ICU / Surgery" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="room-capacity">Capacity (Patients)</label>
+                            <input type="number" id="room-capacity" value="1" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Room Data</button>
+                    </form>
+                    <div class="output" id="add-room-output"></div>
+                </section>
+
+                <section id="search-room-section" class="content-section">
+                    <h2 class="section-title"><i class="fas fa-search"></i> Search Room</h2>
+                    <form id="search-room-form">
+                        <div class="form-group">
+                            <label for="search-room-number">Enter Room Number</label>
+                            <input type="search" id="search-room-number" placeholder="Search by number..." required>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Find Room</button>
+                    </form>
+                    <div class="results" id="search-room-results"></div>
+                </section>
+
+                <section id="add-worker-section" class="content-section">
+                    <h2 class="section-title"><i class="fas fa-user-plus"></i> Add Worker Information</h2>
+                    <form id="add-worker-form">
+                        <div class="form-group">
+                            <label for="worker-id">Worker ID</label>
+                            <input type="text" id="worker-id" placeholder="e.g. W-001" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="worker-name">Worker Name</label>
+                            <input type="text" id="worker-name" placeholder="Full Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="worker-job-title">Job Title</label>
+                            <input type="text" id="worker-job-title" placeholder="Doctor / Nurse / Staff" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="worker-hours">Working Hours</label>
+                            <input type="text" id="worker-hours" placeholder="e.g. 9AM - 5PM" required>
+                        </div>
+                        <div class="form-group" id="doctor-spec-field">
+                            <label for="doctor-specialization">Doctor Specialization (Enter '0' if not Doctor)</label>
+                            <input type="text" id="doctor-specialization" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="worker-contact">Contact Number</label>
+                            <input type="text" id="worker-contact" placeholder="+880..." required>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add Worker</button>
+                    </form>
+                    <div class="output" id="add-worker-output"></div>
+                </section>
+
+                <section id="search-worker-section" class="content-section">
+                    <h2 class="section-title"><i class="fas fa-id-card"></i> Search Worker</h2>
+                    <form id="search-worker-form">
+                        <div class="form-group">
+                            <label for="search-worker-id">Enter Worker ID</label>
+                            <input type="search" id="search-worker-id" placeholder="Search by ID..." required>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-search-plus"></i> Find Worker</button>
+                    </form>
+                    <div class="results" id="search-worker-results"></div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2025 MedFlow Internal Management System. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="internal.js"></script>
+</body>
+</html>

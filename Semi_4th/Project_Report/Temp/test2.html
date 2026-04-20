@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --secondary: #119da4;
+            --success: #13c4a3;
+            --light: #f5f9fc;
+            --dark: #232b3a;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .btn {
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+        
+        .section-header {
+            position: relative;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .section-header:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--secondary);
+        }
+        
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+        }
+        
+        .modal-header {
+            border-bottom: none;
+            padding: 25px 25px 0;
+        }
+        
+        .modal-body {
+            padding: 25px;
+        }
+        
+        .modal-footer {
+            border-top: none;
+            padding: 0 25px 25px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--primary);">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="fas fa-hospital me-2"></i>
+                Hospital Management
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#hospitalInternal"><i class="fas fa-user-nurse me-1"></i> Hospital Internal</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#onlinePortal"><i class="fas fa-globe me-1"></i> Online Portal</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="row mb-5">
+            <div class="col-lg-6">
+                <h1 class="display-5 fw-bold mb-3">Advanced Healthcare Management Solutions</h1>
+                <p class="lead text-muted">A comprehensive system designed to streamline hospital operations and enhance patient care experiences.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hospital Internal -->
+    <section id="hospitalInternal" class="container my-5">
+        <h2 class="section-header fw-bold">Hospital Internal Portal</h2>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-door-open"></i>
+                    </div>
+                    <h5>Add Room Information</h5>
+                    <p class="text-muted small mb-3">Enter details about hospital rooms</p>
+                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#roomNumberModal">
+                        <i class="fas fa-plus-circle me-2"></i>Room_Number
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h5>Find Room Details</h5>
+                    <p class="text-muted small mb-3">Look up information about rooms</p>
+                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#getRoomInfoModal">
+                        <i class="fas fa-info-circle me-2"></i>Get_Room_Information
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h5>Add Staff Details</h5>
+                    <p class="text-muted small mb-3">Enter staff and worker information</p>
+                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#workerInfoModal">
+                        <i class="fas fa-user-plus me-2"></i>Worker_Information
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <h5>Find Staff Details</h5>
+                    <p class="text-muted small mb-3">Search for worker information</p>
+                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#searchWorkerModal">
+                        <i class="fas fa-search me-2"></i>Search_Worker_Information
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Online Portal -->
+    <section id="onlinePortal" class="container my-5">
+        <h2 class="section-header fw-bold">Online Portal</h2>
+        <div class="row g-4">
+            <!-- Hospital Data -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-hospital"></i>
+                    </div>
+                    <h5>Add Hospital</h5>
+                    <p class="text-muted small mb-3">Enter new hospital information</p>
+                    <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#hospitalEntryModal">
+                        <i class="fas fa-plus-circle me-2"></i>Hospital_Data_Entry
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-search-location"></i>
+                    </div>
+                    <h5>Find Hospital</h5>
+                    <p class="text-muted small mb-3">Search for hospital information</p>
+                    <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#hospitalSearchModal">
+                        <i class="fas fa-search me-2"></i>Hospital_Data_Search
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Ambulance Data -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-ambulance"></i>
+                    </div>
+                    <h5>Add Ambulance</h5>
+                    <p class="text-muted small mb-3">Enter ambulance service details</p>
+                    <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#ambulanceEntryModal">
+                        <i class="fas fa-plus-circle me-2"></i>Ambulance_Data_Entry
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h5>Find Ambulance</h5>
+                    <p class="text-muted small mb-3">Search for nearby ambulances</p>
+                    <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#ambulanceSearchModal">
+                        <i class="fas fa-search me-2"></i>Ambulance_Data_Search
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Blood Data -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <h5>Add Blood Data</h5>
+                    <p class="text-muted small mb-3">Enter blood bank information</p>
+                    <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#bloodEntryModal">
+                        <i class="fas fa-plus-circle me-2"></i>Blood_Data_Entry
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h5>Find Blood</h5>
+                    <p class="text-muted small mb-3">Search for blood availability</p>
+                    <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#bloodSearchModal">
+                        <i class="fas fa-search me-2"></i>Blood_Data_Search
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Doctor Data -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h5>Add Doctor</h5>
+                    <p class="text-muted small mb-3">Enter doctor information</p>
+                    <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#doctorEntryModal">
+                        <i class="fas fa-plus-circle me-2"></i>Doctor_Data_Entry
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <h5>Find Doctor</h5>
+                    <p class="text-muted small mb-3">Search for doctors by location</p>
+                    <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#doctorSearchModal">
+                        <i class="fas fa-search me-2"></i>Doctor_Data_Search
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Patient-Doctor Interaction -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-comment-medical"></i>
+                    </div>
+                    <h5>Report Symptoms</h5>
+                    <p class="text-muted small mb-3">Submit patient symptoms</p>
+                    <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#symptomEntryModal">
+                        <i class="fas fa-notes-medical me-2"></i>Patient_Give_Symptom
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h5>Patient Lookup</h5>
+                    <p class="text-muted small mb-3">Doctors can search patient data</p>
+                    <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#doctorPatientModal">
+                        <i class="fas fa-search me-2"></i>Doctor_Search_Patient_Data
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-prescription"></i>
+                    </div>
+                    <h5>Write Prescription</h5>
+                    <p class="text-muted small mb-3">Doctors can prescribe medicine</p>
+                    <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#prescriptionEntryModal">
+                        <i class="fas fa-file-medical me-2"></i>Doctor_Give_Prescription
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-pills"></i>
+                    </div>
+                    <h5>View Prescription</h5>
+                    <p class="text-muted small mb-3">Patients can check prescriptions</p>
+                    <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#prescriptionSearchModal">
+                        <i class="fas fa-search me-2"></i>Patient_Search_Prescription
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Medicine Info -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 text-center">
+                    <div class="feature-icon">
+                        <i class="fas fa-capsules"></i>
+                    </div>
+                    <h5>Medicine Information</h5>
+                    <p class="text-muted small mb-3">Access Medex drug database</p>
+                    <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#medicineRedirectModal">
+                        <i class="fas fa-external-link-alt me-2"></i>Take_Data_Medicine_Redirect_Medex
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-hospital me-2"></i>Hospital Management System</h5>
+                    <p class="small">A comprehensive healthcare management solution</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="small">© 2023 Hospital Management System</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals for each function -->
+    <!-- Just showing a few examples of modals -->
+
+    <!-- Room Number Modal -->
+    <div class="modal fade" id="roomNumberModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-door-open me-2"></i>Add Room Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="roomNumber" class="form-label">Room Number</label>
+                            <input type="text" class="form-control" id="roomNumber" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="roomType" class="form-label">Room Type</label>
+                            <select class="form-select" id="roomType" required>
+                                <option value="">Select room type</option>
+                                <option value="AC">AC</option>
+                                <option value="Non-AC">Non-AC</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="roomAvailability" class="form-label">Room Availability</label>
+                            <select class="form-select" id="roomAvailability" required>
+                                <option value="">Select availability</option>
+                                <option value="Available">Available</option>
+                                <option value="Occupied">Occupied</option>
+                                <option value="Maintenance">Under Maintenance</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="roomFor" class="form-label">Room For</label>
+                            <input type="text" class="form-control" id="roomFor" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="roomCapacity" class="form-label">Room Capacity (per patient)</label>
+                            <input type="number" class="form-control" id="roomCapacity" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Get Room Info Modal -->
+    <div class="modal fade" id="getRoomInfoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-search me-2"></i>Find Room Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="searchRoomNumber" class="form-label">Room Number</label>
+                            <input type="text" class="form-control" id="searchRoomNumber" required>
+                        </div>
+                    </form>
+                    <div class="mt-4 p-3 bg-light rounded d-none" id="roomSearchResult">
+                        <h6>Room Details:</h6>
+                        <div id="roomDetails"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Simulated backend data storage
+        const hospitalData = {
+            rooms: {},
+            workers: {},
+            hospitals: {},
+            ambulances: {},
+            bloodBank: {},
+            doctors: {},
+            patients: {},
+            prescriptions: {}
+        };
+        
+        // Patient-Prescription relationship mapping
+        const patientPrescriptions = {};
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.btn-primary, .btn-success');
+            
+            // Room search functionality
+            document.querySelector('#getRoomInfoModal .btn-primary').addEventListener('click', function() {
+                const roomNumber = document.getElementById('searchRoomNumber').value;
+                const resultDiv = document.getElementById('roomSearchResult');
+                const detailsDiv = document.getElementById('roomDetails');
+                
+                if (hospitalData.rooms[roomNumber]) {
+                    const room = hospitalData.rooms[roomNumber];
+                    detailsDiv.innerHTML = `
+                        <p><strong>Room Number:</strong> ${roomNumber}</p>
+                        <p><strong>Type:</strong> ${room.type}</p>
+                        <p><strong>Availability:</strong> ${room.availability}</p>
+                        <p><strong>Room For:</strong> ${room.for}</p>
+                        <p><strong>Capacity:</strong> ${room.capacity}</p>
+                    `;
+                    resultDiv.classList.remove('d-none');
+                } else {
+                    detailsDiv.innerHTML = '<div class="alert alert-warning">Room not found</div>';
+                    resultDiv.classList.remove('d-none');
+                }
+            });
+            
+            // Room add functionality
+            document.querySelector('#roomNumberModal .btn-primary').addEventListener('click', function() {
+                const roomNumber = document.getElementById('roomNumber').value;
+                const roomType = document.getElementById('roomType').value;
+                const roomAvailability = document.getElementById('roomAvailability').value;
+                const roomFor = document.getElementById('roomFor').value;
+                const roomCapacity = document.getElementById('roomCapacity').value;
+                
+                if (roomNumber && roomType && roomAvailability && roomFor && roomCapacity) {
+                    // Save to our simulated database
+                    hospitalData.rooms[roomNumber] = {
+                        type: roomType,
+                        availability: roomAvailability,
+                        for: roomFor,
+                        capacity: roomCapacity
+                    };
+                    
+                    // Show success message
+                    alert('Room added successfully!');
+                    
+                    // Clear form
+                    document.getElementById('roomNumber').value = '';
+                    document.getElementById('roomType').selectedIndex = 0;
+                    document.getElementById('roomAvailability').selectedIndex = 0;
+                    document.getElementById('roomFor').value = '';
+                    document.getElementById('roomCapacity').value = '';
+                    
+                    // Hide modal
+                    const modalInstance = bootstrap.Modal.getInstance(document.getElementById('roomNumberModal'));
+                    modalInstance.hide();
+                } else {
+                    alert('Please fill all required fields');
+                }
+            });
+            
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Log the button click
+                    console.log(`Button clicked: ${this.textContent.trim()}`);
+                    
+                    // Create dynamic modals for buttons without defined modals
+                    const targetModal = this.getAttribute('data-bs-target');
+                    if(targetModal && !document.querySelector(targetModal) && targetModal !== '#roomNumberModal' && targetModal !== '#getRoomInfoModal') {
+                        const modalType = targetModal.substring(1);
+                        const modalTitle = this.textContent.trim();
+                        createDynamicModal(modalType, modalTitle);
+                    }
+                });
+            });
+            
+            // Function to dynamically create modals with appropriate fields
+            function createDynamicModal(modalId, modalTitle) {
+                let formFields = '';
+                const btnClass = modalId.includes('Search') ? 'btn-info' : 'btn-primary';
+                const btnText = modalId.includes('Search') ? 'Search' : 'Submit';
+                
+                // Generate appropriate form fields based on modal type
+                if (modalId.includes('worker') || modalId.includes('Worker')) {
+                    if (modalId.includes('Search')) {
+                        formFields = `
+                            <div class="mb-3">
+                                <label for="searchField" class="form-label">Worker ID</label>
+                                <input type="text" class="form-control" id="searchField" required>
+                            </div>
+                            <div class="alert alert-info">Enter worker ID to search</div>`;
+                    } else {
+                        formFields = `
+                            <div class="mb-3">
+                                <label for="workerId" class="form-label">Worker ID</label>
+                                <input type="text" class="form-control" id="workerId" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="workerName" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="workerName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="workerRole" class="form-label">Role</label>
+                                <select class="form-select" id="workerRole" required>
+                                    <option value="">Select role</option>
+                                    <option value="Doctor">Doctor</option>
+                                    <option value="Nurse">Nurse</option>
+                                    <option value="Staff">Staff</option>
+                                    <option value="Admin">Admin</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="workerContact" class="form-label">Contact</label>
+                                <input type="tel" class="form-control" id="workerContact" required>
+                            </div>`;
+                    }
+                } else if (modalId.includes('hospital') || modalId.includes('Hospital')) {
+                    if (modalId.includes('Search')) {
+                        formFields = `
+                            <div class="mb-3">
+                                <label for="searchField" class="form-label">Search by Hospital Name or Location</label>
+                                <input type="text" class="form-control" id="searchField" required>
+                            </div>
+                            <div class="alert alert-info">Enter hospital name or location</div>`;
+                    } else {
+                        formFields = `
+                            <div class="mb-3">
+                                <label for="hospitalId" class="form-label">Hospital ID</label>
+                                <input type="text" class="form-control" id="hospitalId" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="hospitalName" class="form-label">Hospital Name</label>
+                                <input type="text" class="form-control" id="hospitalName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="hospitalLocation" class="form-label">Location</label>
+                                <input type="text" class="form-control" id="hospitalLocation" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="hospitalPhone" class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="hospitalPhone" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="hospitalAvailability" class="form-label">Availability</label>
+                                <select class="form-select" id="hospitalAvailability" required>
+                                    <option value="">Select availability</option>
+                                    <option value="Open">Open</option>
+                                    <option value="Closed">Closed</option>
+                                    <option value="Emergency Only">Emergency Only</option>
+                                </select>
+                            </div>`;
+                    }
+                } else if (modalId.includes('ambulance') || modalId.includes('Ambulance')) {
+                    if (modalId.includes('Search')) {
+                        formFields = `
+                            <div class="mb-3">
+                                <label for="searchField" class="form-label">Search by Location</label>
+                                <input type="text" class="form-control" id="searchField" required>
+                            </div>
+                            <div class="alert alert-info">Enter location to find nearby ambulances</div>`;
+                    } else {
+                        formFields = `
+                            <div class="mb-3">
+                                <label for="ambulanceId" class="form-label">Ambulance ID</label>
+                                <input type="text" class="form-control" id="ambulanceId" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="ambulanceContact" class="form-label">Contact Number</label>
+                                <input type="tel" class="form-control" id="ambulanceContact" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="ambulanceLocation" class="form-label">Current Location</label>
+                                <input type="text" class="form-control" id="ambulanceLocation" required>
+                            </div>`;
+                    }
+                } else if (modalId.includes('blood') || modalId.includes('Blood')) {
+                    if (modalId.includes('Search')) {
+                        formFields = `
+                            <div class="mb-3">
+                                <label for="searchField" class="form-label">Blood Group</label>
+                                <select class="form-select" id="searchField" required>
+                                    <option value="">Select blood group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                            <div class="alert alert-info">Select blood group to check availability</div>`;
+                    } else {
+                        formFields = `
+                            <div class="mb-3">
+                                <label for="bloodGroup" class="form-label">Blood Group</label>
+                                <select class="form-select" id="bloodGroup" required>
+                                    <option value="">Select blood group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bloodQuantity" class="form-label">Quantity (units)</label>
+                                <input type="number" class="form-control" id="bloodQuantity" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bloodLocation" class="form-label">Blood Bank Location</label>
+                                <input type="text" class="form-control" id="bloodLocation" required>
+                            </div>`;
+                    }
+                } else if (modalId.includes('doctor') || modalId.includes('Doctor')) {
+                    if (modalId.includes('Search')) {
+                        formFields = `
+                            <div class="mb-3">
+                                <label for="searchField" class="form-label">Search by Name, Specialty, or Location</label>
+                                <input type="text" class="form-control" id="searchField" required>
+                            </div>
+                            <div class="alert alert-info">Enter doctor name, specialty, or location</div>`;
+                    } else if (modalId.includes('Patient')) {
+                        formFields = `
+                            <div class="mb-3">
+                                <label for="searchField" class="form-label">Patient ID</label>
+                                <input type="text" class="form-control" id="searchField" required>
+                            </div>
+                            <div class="alert alert-info">Enter patient ID to view their details</div>`;
+                    } else {
+                        formFields = `
+                            <div class="mb-3">
+                                <label for="doctorId" class="form-label">Doctor ID</label>
+                                <input type="text" class="form-control" id="doctorId" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="doctorName" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="doctorName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="doctorSpecialty" class="form-label">Specialty</label>
+                                <input type="text" class="form-control" id="doctorSpecialty" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="doctorContact" class="form-label">Contact</label>
+                                <input type="tel" class="form-control" id="doctorContact" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="doctorLocation" class="form-label">Location</label>
+                                <input type="text" class="form-control" id="doctorLocation" required>
+                            </div>`;
+                    }
+                } else if (modalId.includes('symptom') || modalId.includes('Symptom')) {
+                    formFields = `
+                        <div class="mb-3">
+                            <label for="patientId" class="form-label">Patient ID</label>
+                            <input type="text" class="form-control" id="patientId" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="patientName" class="form-label">Patient Name</label>
+                            <input type="text" class="form-control" id="patientName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="patientAge" class="form-label">Patient Age</label>
+                            <input type="text" class="form-control" id="patientAge" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="patientSymptoms" class="form-label">Symptoms</label>
+                            <textarea class="form-control" id="patientSymptoms" rows="4" required></textarea>
+                        </div>`;
+                } else if (modalId.includes('prescription') || modalId.includes('Prescription')) {
+                    if (modalId.includes('Search')) {
+                        formFields = `
+                            <div class="mb-3">
+                                <label for="searchField" class="form-label">Patient ID</label>
+                                <input type="text" class="form-control" id="searchField" required>
+                            </div>
+                            <div class="alert alert-info">Enter patient ID to find their prescriptions</div>`;
+                    } else {
+                        formFields = `
+                            <div class="mb-3">
+                                <label for="prescriptionPatientId" class="form-label">Patient ID</label>
+                                <input type="text" class="form-control" id="prescriptionPatientId" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="prescriptionDoctorId" class="form-label">Doctor ID</label>
+                                <input type="text" class="form-control" id="prescriptionDoctorId" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="prescriptionMedicine" class="form-label">Medicine</label>
+                                <textarea class="form-control" id="prescriptionMedicine" rows="4" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="prescriptionInstructions" class="form-label">Instructions</label>
+                                <textarea class="form-control" id="prescriptionInstructions" rows="2" required></textarea>
+                            </div>`;
+                    }
+                } else {
+                    formFields = `
+                        <div class="mb-3">
+                            <label for="searchField" class="form-label">Search Term</label>
+                            <input type="text" class="form-control" id="searchField" required>
+                        </div>
+                        <div class="alert alert-info">Enter search criteria to find relevant information</div>`;
+                }
+
+                const modalHTML = `
+                <div class="modal fade" id="${modalId}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><i class="fas fa-info-circle me-2"></i>${modalTitle}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="${modalId}Form">
+                                    ${formFields}
+                                </form>
+                                <div class="mt-3 d-none" id="${modalId}Result">
+                                    <div class="alert alert-info">Results will appear here</div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn ${btnClass} modal-action-btn">${btnText}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+                
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+                
+                // Initialize the new modal
+                const modal = new bootstrap.Modal(document.getElementById(modalId));
+                modal.show();
+                
+                // Add event listener for the submit/search button
+                document.querySelector(`#${modalId} .modal-action-btn`).addEventListener('click', function() {
+                    console.log(`Form submitted for: ${modalTitle}`);
+                    
+                    const form = document.getElementById(`${modalId}Form`);
+                    let isValid = true;
+                    
+                    // Basic form validation
+                    form.querySelectorAll('[required]').forEach(input => {
+                        if (!input.value.trim()) {
+                            isValid = false;
+                            input.classList.add('is-invalid');
+                        } else {
+                            input.classList.remove('is-invalid');
+                        }
+                    });
+                    
+                    if (isValid) {
+                        // Process the form data
+                        const formData = {};
+                        form.querySelectorAll('input, select, textarea').forEach(input => {
+                            formData[input.id] = input.value;
+                        });
+                        
+                        console.log('Form data:', formData);
+                        
+                        // Store data in our simulated database based on modal type
+                        if (modalId.includes('Entry') && !modalId.includes('Search')) {
+                            if (modalId.includes('worker')) hospitalData.workers[formData.workerId] = formData;
+                            else if (modalId.includes('hospital')) hospitalData.hospitals[formData.hospitalId] = formData;
+                            else if (modalId.includes('ambulance')) hospitalData.ambulances[formData.ambulanceId] = formData;
+                            else if (modalId.includes('blood')) hospitalData.bloodBank[formData.bloodGroup] = formData;
+                            else if (modalId.includes('doctor')) hospitalData.doctors[formData.doctorId] = formData;
+                            else if (modalId.includes('symptom')) hospitalData.patients[formData.patientId] = formData;
+                            else if (modalId.includes('prescription')) hospitalData.prescriptions[formData.prescriptionPatientId] = formData;
+                            
+                            alert('Data saved successfully!');
+                            modal.hide();
+                        } else {
+                            // Display search results
+                            const resultDiv = document.getElementById(`${modalId}Result`);
+                            resultDiv.innerHTML = '<div class="alert alert-success">Data found! This is simulated search result data.</div>';
+                            resultDiv.classList.remove('d-none');
+                        }
+                    } else {
+                        alert('Please fill all required fields');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>                // Add event listener for the submit/search button
+                document.querySelector(`#${modalId} .modal-action-btn`).addEventListener('click', function() {
+                    console.log(`Form submitted for: ${modalTitle}`);
+                    
+                    const form = document.getElementById(`${modalId}Form`);
+                    let isValid = true;
+                    
+                    // Basic form validation
+                    form.querySelectorAll('[required]').forEach(input => {
+                        if (!input.value.trim()) {
+                            isValid = false;
+                            input.classList.add('is-invalid');
+                        } else {
+                            input.classList.remove('is-invalid');
+                        }
+                    });
+                    
+                    if (isValid) {
+                        // Process the form data
+                        const formData = {};
+                        form.querySelectorAll('input, select, textarea').forEach(input => {
+                            formData[input.id] = input.value;
+                        });
+                        
+                        console.log('Form data:', formData);
+                        
+                        // Store data in our simulated database based on modal type
+                        if (modalId.includes('Entry') && !modalId.includes('Search')) {
+                            if (modalId.includes('worker')) hospitalData.workers[formData.workerId] = formData;
+                            else if (modalId.includes('hospital')) hospitalData.hospitals[formData.hospitalId] = formData;
+                            else if (modalId.includes('ambulance')) hospitalData.ambulances[formData.ambulanceId] = formData;
+                            else if (modalId.includes('blood')) hospitalData.bloodBank[formData.bloodGroup] = formData;
+                            else if (modalId.includes('doctor')) hospitalData.doctors[formData.doctorId] = formData;
+                            else if (modalId.includes('symptom')) hospitalData.patients[formData.patientId] = formData;
+                            else if (modalId.includes('prescription')) {
+                                hospitalData.prescriptions[formData.prescriptionPatientId] = formData;
+                                // Create relationship between patient and prescription
+                                patientPrescriptions[formData.prescriptionPatientId] = formData;
+                            }
+                            
+                            alert('Data saved successfully!');
+                            modal.hide();
+                        } else {
+                            // Display search results based on the search type
+                            const resultDiv = document.getElementById(`${modalId}Result`);
+                            let resultsHTML = '';
+                            
+                            // Search logic based on modal type
+                            if (modalId.includes('hospital')) {
+                                const searchTerm = formData.searchField.toLowerCase();
+                                let found = false;
+                                
+                                for (const id in hospitalData.hospitals) {
+                                    const hospital = hospitalData.hospitals[id];
+                                    if (hospital.hospitalName && hospital.hospitalName.toLowerCase().includes(searchTerm) || 
+                                        hospital.hospitalLocation && hospital.hospitalLocation.toLowerCase().includes(searchTerm)) {
+                                        resultsHTML += `<div class="alert alert-info">
+                                            <strong>Hospital:</strong> ${hospital.hospitalName}<br>
+                                            <strong>Location:</strong> ${hospital.hospitalLocation}<br>
+                                            <strong>Phone:</strong> ${hospital.hospitalPhone}<br>
+                                            <strong>Availability:</strong> ${hospital.hospitalAvailability}
+                                        </div>`;
+                                        found = true;
+                                    }
+                                }
+                                
+                                if (!found) resultsHTML = '<div class="alert alert-warning">No hospitals found matching your search.</div>';
+                            } else if (modalId.includes('ambulance')) {
+                                const searchLocation = formData.searchField.toLowerCase();
+                                let found = false;
+                                
+                                for (const id in hospitalData.ambulances) {
+                                    const ambulance = hospitalData.ambulances[id];
+                                    if (ambulance.ambulanceLocation && ambulance.ambulanceLocation.toLowerCase().includes(searchLocation)) {
+                                        resultsHTML += `<div class="alert alert-info">
+                                            <strong>Ambulance ID:</strong> ${id}<br>
+                                            <strong>Contact:</strong> ${ambulance.ambulanceContact}<br>
+                                            <strong>Location:</strong> ${ambulance.ambulanceLocation}
+                                        </div>`;
+                                        found = true;
+                                    }
+                                }
+                                
+                                if (!found) resultsHTML = '<div class="alert alert-warning">No ambulances found in the specified location.</div>';
+                            } else if (modalId.includes('blood')) {
+                                const searchBlood = formData.searchField.toUpperCase();
+                                const bloodBank = hospitalData.bloodBank[searchBlood];
+                                
+                                if (bloodBank) {
+                                    resultsHTML = `<div class="alert alert-info">
+                                        <strong>Blood Group:</strong> ${searchBlood}<br>
+                                        <strong>Quantity:</strong> ${bloodBank.bloodQuantity} units<br>
+                                        <strong>Location:</strong> ${bloodBank.bloodLocation}
+                                    </div>`;
+                                } else {
+                                    resultsHTML = '<div class="alert alert-warning">No blood data found for the specified group.</div>';
+                                }
+                            } else if (modalId.includes('doctor')) {
+                                const searchTerm = formData.searchField.toLowerCase();
+                                let found = false;
+                                
+                                for (const id in hospitalData.doctors) {
+                                    const doctor = hospitalData.doctors[id];
+                                    if ((doctor.doctorName && doctor.doctorName.toLowerCase().includes(searchTerm)) || 
+                                        (doctor.doctorSpecialty && doctor.doctorSpecialty.toLowerCase().includes(searchTerm)) ||
+                                        (doctor.doctorLocation && doctor.doctorLocation.toLowerCase().includes(searchTerm))) {
+                                        resultsHTML += `<div class="alert alert-info">
+                                            <strong>Doctor:</strong> ${doctor.doctorName}<br>
+                                            <strong>Specialty:</strong> ${doctor.doctorSpecialty}<br>
+                                            <strong>Contact:</strong> ${doctor.doctorContact}<br>
+                                            <strong>Location:</strong> ${doctor.doctorLocation}
+                                        </div>`;
+                                        found = true;
+                                    }
+                                }
+                                
+                                if (!found) resultsHTML = '<div class="alert alert-warning">No doctors found matching your search.</div>';
+                            } else if (modalId.includes('Patient_Search_Prescription')) {
+                                const patientId = formData.searchField;
+                                const prescription = patientPrescriptions[patientId];
+                                
+                                if (prescription) {
+                                    resultsHTML = `<div class="alert alert-info">
+                                        <strong>Medicine:</strong> ${prescription.prescriptionMedicine}<br>
+                                        <strong>Instructions:</strong> ${prescription.prescriptionInstructions}<br>
+                                    </div>`;
+                                } else {
+                                    resultsHTML = '<div class="alert alert-warning">No prescription found for this patient.</div>';
+                                }
+                            } else if (modalId.includes('worker')) {
+                                const workerId = formData.searchField;
+                                const worker = hospitalData.workers[workerId];
+                                
+                                if (worker) {
+                                    resultsHTML = `<div class="alert alert-info">
+                                        <strong>Name:</strong> ${worker.workerName}<br>
+                                        <strong>Role:</strong> ${worker.workerRole}<br>
+                                        <strong>Contact:</strong> ${worker.workerContact || 'N/A'}<br>
+                                    </div>`;
+                                } else {
+                                    resultsHTML = '<div class="alert alert-warning">No worker found with that ID.</div>';
+                                }
+                            } else {
+                                resultsHTML = '<div class="alert alert-info">Search completed. Please check results.</div>';
+                            }
+                            
+                            resultDiv.innerHTML = resultsHTML;
+                            resultDiv.classList.remove('d-none');
+                        }
+                    } else {
+                        alert('Please fill all required fields');
+                    }
+                });

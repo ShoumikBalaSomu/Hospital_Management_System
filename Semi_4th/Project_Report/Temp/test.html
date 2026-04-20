@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: 100vh;
+        }
+        .sidebar {
+            background: white;
+            border-right: 1px solid #ddd;
+            padding: 20px;
+        }
+        .sidebar h2 {
+            color: #1a73e8;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+        .sidebar button {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .sidebar button.active {
+            background: #1a73e8;
+            color: white;
+            border-color: #1a73e8;
+        }
+        .main-content {
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #5f6368;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .btn {
+            padding: 10px 20px;
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .btn:hover {
+            background: #1557b0;
+        }
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            min-height: 100px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Hospital Internal</h2>
+            <button onclick="showSection('addRoom')">Add Room</button>
+            <button onclick="showSection('viewRoom')">View Room</button>
+            <button onclick="showSection('addWorker')">Add Worker</button>
+            <button onclick="showSection('searchWorker')">Search Worker</button>
+            
+            <h2>Online Services</h2>
+            <button onclick="showSection('hospitalEntry')">Hospital Entry</button>
+            <button onclick="showSection('hospitalSearch')">Hospital Search</button>
+            <button onclick="showSection('ambulanceEntry')">Ambulance Entry</button>
+            <button onclick="showSection('ambulanceSearch')">Ambulance Search</button>
+            <button onclick="showSection('bloodEntry')">Blood Entry</button>
+            <button onclick="showSection('bloodSearch')">Blood Search</button>
+            <button onclick="showSection('doctorEntry')">Doctor Entry</button>
+            <button onclick="showSection('doctorSearch')">Doctor Search</button>
+            <button onclick="showSection('patientSymptom')">Patient Symptom</button>
+            <button onclick="showSection('doctorSearchPatient')">Doctor Search Patient</button>
+            <button onclick="showSection('doctorPrescription')">Doctor Prescription</button>
+            <button onclick="showSection('patientPrescription')">Patient Prescription</button>
+            <button onclick="showSection('medex')">Medex Redirect</button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Add Room Section -->
+            <div id="addRoom" class="card hidden">
+                <h3>Add Room Information</h3>
+                <div class="form-group">
+                    <label>Room Number:</label>
+                    <input type="text" id="roomNumber">
+                </div>
+                <div class="form-group">
+                    <label>Room Type:</label>
+                    <select id="roomType">
+                        <option value="AC">AC</option>
+                        <option value="Non-AC">Non-AC</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Availability:</label>
+                    <select id="roomAvailability">
+                        <option value="Available">Available</option>
+                        <option value="Occupied">Occupied</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Room For:</label>
+                    <input type="text" id="roomFor">
+                </div>
+                <div class="form-group">
+                    <label>Capacity per Patient:</label>
+                    <input type="number" id="roomCapacity">
+                </div>
+                <button class="btn" onclick="addRoom()">Submit</button>
+                <div class="result-box" id="roomResult"></div>
+            </div>
+
+            <!-- View Room Section -->
+            <div id="viewRoom" class="card hidden">
+                <h3>View Room Information</h3>
+                <div class="form-group">
+                    <label>Room Number:</label>
+                    <input type="text" id="searchRoomNumber">
+                </div>
+                <button class="btn" onclick="viewRoom()">Search</button>
+                <div class="result-box" id="viewRoomResult"></div>
+            </div>
+
+            <!-- Add Worker Section -->
+            <div id="addWorker" class="card hidden">
+                <h3>Add Worker Information</h3>
+                <div class="form-group">
+                    <label>Worker ID:</label>
+                    <input type="text" id="workerId">
+                </div>
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" id="workerName">
+                </div>
+                <div class="form-group">
+                    <label>Job Title:</label>
+                    <input type="text" id="jobTitle">
+                </div>
+                <div class="form-group">
+                    <label>Working Hours:</label>
+                    <input type="text" id="workingHours">
+                </div>
+                <div class="form-group">
+                    <label>Specialization (if doctor):</label>
+                    <input type="text" id="specialization">
+                </div>
+                <div class="form-group">
+                    <label>Contact Number:</label>
+                    <input type="text" id="contactNumber">
+                </div>
+                <button class="btn" onclick="addWorker()">Submit</button>
+                <div class="result-box" id="workerResult"></div>
+            </div>
+
+            <!-- Search Worker Section -->
+            <div id="searchWorker" class="card hidden">
+                <h3>Search Worker</h3>
+                <div class="form-group">
+                    <label>Worker ID:</label>
+                    <input type="text" id="searchWorkerId">
+                </div>
+                <button class="btn" onclick="searchWorker()">Search</button>
+                <div class="result-box" id="searchWorkerResult"></div>
+            </div>
+
+            <!-- Hospital Entry -->
+            <div id="hospitalEntry" class="card hidden">
+                <h3>Hospital Data Entry</h3>
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" id="hospitalName">
+                </div>
+                <div class="form-group">
+                    <label>Location:</label>
+                    <input type="text" id="hospitalLocation">
+                </div>
+                <div class="form-group">
+                    <label>Contact:</label>
+                    <input type="text" id="hospitalContact">
+                </div>
+                <div class="form-group">
+                    <label>Availability:</label>
+                    <select id="hospitalAvailability">
+                        <option value="Available">Available</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="addHospital()">Submit</button>
+                <div class="result-box" id="hospitalEntryResult"></div>
+            </div>
+
+            <!-- Hospital Search -->
+            <div id="hospitalSearch" class="card hidden">
+                <h3>Search Hospital</h3>
+                <div class="form-group">
+                    <label>Location:</label>
+                    <input type="text" id="searchHospitalLocation">
+                </div>
+                <button class="btn" onclick="searchHospital()">Search</button>
+                <div class="result-box" id="hospitalSearchResult"></div>
+            </div>
+
+            <!-- Ambulance Entry -->
+            <div id="ambulanceEntry" class="card hidden">
+                <h3>Ambulance Entry</h3>
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" id="ambulanceName">
+                </div>
+                <div class="form-group">
+                    <label>Driver Name:</label>
+                    <input type="text" id="driverName">
+                </div>
+                <div class="form-group">
+                    <label>Contact:</label>
+                    <input type="text" id="ambulanceContact">
+                </div>
+                <div class="form-group">
+                    <label>Location:</label>
+                    <input type="text" id="ambulanceLocation">
+                </div>
+                <div class="form-group">
+                    <label>Availability:</label>
+                    <select id="ambulanceAvailability">
+                        <option value="Available">Available</option>
+                        <option value="On Duty">On Duty</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status:</label>
+                    <input type="text" id="ambulanceStatus">
+                </div>
+                <button class="btn" onclick="addAmbulance()">Submit</button>
+                <div class="result-box" id="ambulanceEntryResult"></div>
+            </div>
+
+            <!-- Ambulance Search -->
+            <div id="ambulanceSearch" class="card hidden">
+                <h3>Search Ambulance</h3>
+                <div class="form-group">
+                    <label>Location:</label>
+                    <input type="text" id="searchAmbulanceLocation">
+                </div>
+                <button class="btn" onclick="searchAmbulance()">Search</button>
+                <div class="result-box" id="ambulanceSearchResult"></div>
+            </div>
+
+            <!-- Blood Entry -->
+            <div id="bloodEntry" class="card hidden">
+                <h3>Blood Entry</h3>
+                <div class="form-group">
+                    <label>Blood Group:</label>
+                    <select id="bloodGroup">
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Bank Name:</label>
+                    <input type="text" id="bloodBankName">
+                </div>
+                <div class="form-group">
+                    <label>Contact:</label>
+                    <input type="text" id="bloodContact">
+                </div>
+                <div class="form-group">
+                    <label>Location:</label>
+                    <input type="text" id="bloodLocation">
+                </div>
+                <div class="form-group">
+                    <label>Availability:</label>
+                    <select id="bloodAvailability">
+                        <option value="Available">Available</option>
+                        <option value="Unavailable">Unavailable</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status:</label>
+                    <input type="text" id="bloodStatus">
+                </div>
+                <button class="btn" onclick="addBlood()">Submit</button>
+                <div class="result-box" id="bloodEntryResult"></div>
+            </div>
+
+            <!-- Blood Search -->
+            <div id="bloodSearch" class="card hidden">
+                <h3>Search Blood</h3>
+                <div class="form-group">
+                    <label>Location:</label>
+                    <input type="text" id="searchBloodLocation">
+                </div>
+                <button class="btn" onclick="searchBlood()">Search</button>
+                <div class="result-box" id="bloodSearchResult"></div>
+            </div>
+
+            <!-- Doctor Entry -->
+            <div id="doctorEntry" class="card hidden">
+                <h3>Doctor Entry</h3>
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" id="doctorName">
+                </div>
+                <div class="form-group">
+                    <label>Specialization:</label>
+                    <input type="text" id="doctorSpecialization">
+                </div>
+                <div class="form-group">
+                    <label>Contact:</label>
+                    <input type="text" id="doctorContact">
+                </div>
+                <div class="form-group">
+                    <label>Location:</label>
+                    <input type="text" id="doctorLocation">
+                </div>
+                <div class="form-group">
+                    <label>Availability:</label>
+                    <select id="doctorAvailability">
+                        <option value="Available">Available</option>
+                        <option value="Unavailable">Unavailable</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Fees:</label>
+                    <input type="number" id="doctorFees">
+                </div>
+                <div class="form-group">
+                    <label>Status:</label>
+                    <input type="text" id="doctorStatus">
+                </div>
+                <button class="btn" onclick="addDoctor()">Submit</button>
+                <div class="result-box" id="doctorEntryResult"></div>
+            </div>
+
+            <!-- Doctor Search -->
+            <div id="doctorSearch" class="card hidden">
+                <h3>Search Doctor</h3>
+                <div class="form-group">
+                    <label>Location:</label>
+                    <input type="text" id="searchDoctorLocation">
+                </div>
+                <button class="btn" onclick="searchDoctor()">Search</button>
+                <div class="result-box" id="doctorSearchResult"></div>
+            </div>
+
+            <!-- Patient Symptom -->
+            <div id="patientSymptom" class="card hidden">
+                <h3>Patient Symptom Report</h3>
+                <div class="form-group">
+                    <label>Patient ID:</label>
+                    <input type="text" id="patientId">
+                </div>
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" id="patientName">
+                </div>
+                <div class="form-group">
+                    <label>Age:</label>
+                    <input type="number" id="patientAge">
+                </div>
+                <div class="form-group">
+                    <label>Symptom:</label>
+                    <textarea id="patientSymptom"></textarea>
+                </div>
+                <button class="btn" onclick="reportSymptom()">Submit</button>
+                <div class="result-box" id="symptomResult"></div>
+            </div>
+
+            <!-- Doctor Search Patient -->
+            <div id="doctorSearchPatient" class="card hidden">
+                <h3>Doctor Search Patient</h3>
+                <div class="form-group">
+                    <label>Patient ID:</label>
+                    <input type="text" id="doctorSearchPatientId">
+                </div>
+                <button class="btn" onclick="doctorSearchPatient()">Search</button>
+                <div class="result-box" id="doctorSearchPatientResult"></div>
+            </div>
+
+            <!-- Doctor Prescription -->
+            <div id="doctorPrescription" class="card hidden">
+                <h3>Doctor Prescription</h3>
+                <div class="form-group">
+                    <label>Patient ID:</label>
+                    <input type="text" id="prescriptionPatientId">
+                </div>
+                <div class="form-group">
+                    <label>Medicine Name:</label>
+                    <input type="text" id="medicineName">
+                </div>
+                <div class="form-group">
+                    <label>Time:</label>
+                    <input type="text" id="medicineTime">
+                </div>
+                <div class="form-group">
+                    <label>Dose:</label>
+                    <input type="text" id="medicineDose">
+                </div>
+                <div class="form-group">
+                    <label>Days:</label>
+                    <input type="text" id="medicineDays">
+                </div>
+                <button class="btn" onclick="addPrescription()">Submit</button>
+                <div class="result-box" id="prescriptionResult"></div>
+            </div>
+
+            <!-- Patient Prescription -->
+            <div id="patientPrescription" class="card hidden">
+                <h3>Patient Prescription</h3>
+                <div class="form-group">
+                    <label>Patient ID:</label>
+                    <input type="text" id="patientPrescriptionId">
+                </div>
+                <button class="btn" onclick="viewPrescription()">Search</button>
+                <div class="result-box" id="patientPrescriptionResult"></div>
+            </div>
+
+            <!-- Medex Redirect -->
+            <div id="medex" class="card hidden">
+                <h3>Medex Redirect</h3>
+                <div class="form-group">
+                    <label>Medicine Name:</label>
+                    <input type="text" id="medicineRedirect">
+                </div>
+                <button class="btn" onclick="redirectMedex()">Search</button>
+                <div class="result-box" id="medexResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data storage
+        const rooms = [];
+        const workers = [];
+        const hospitals = [];
+        const ambulances = [];
+        const bloodBanks = [];
+        const doctors = [];
+        const patients = [];
+        const prescriptions = [];
+
+        // Section switching
+        function showSection(sectionId) {
+            document.querySelectorAll('.card').forEach(card => card.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+            document.querySelectorAll('.sidebar button').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.sidebar button[onclick="showSection('${sectionId}')"]`).classList.add('active');
+        }
+
+        // Hospital Internal Functions
+        function addRoom() {
+            const room = {
+                number: document.getElementById('roomNumber').value,
+                type: document.getElementById('roomType').value,
+                availability: document.getElementById('roomAvailability').value,
+                for: document.getElementById('roomFor').value,
+                capacity: document.getElementById('roomCapacity').value
+            };
+            rooms.push(room);
+            document.getElementById('roomResult').innerHTML = 'Room added successfully!';
+            clearForm('addRoom');
+        }
+
+        function viewRoom() {
+            const searchNumber = document.getElementById('searchRoomNumber').value;
+            const room = rooms.find(r => r.number === searchNumber);
+            const resultDiv = document.getElementById('viewRoomResult');
+            if (room) {
+                resultDiv.innerHTML = `
+                    <p><strong>Type:</strong> ${room.type}</p>
+                    <p><strong>Availability:</strong> ${room.availability}</p>
+                    <p><strong>For:</strong> ${room.for}</p>
+                    <p><strong>Capacity:</strong> ${room.capacity}</p>
+                `;
+            } else {
+                resultDiv.innerHTML = 'Room not found!';
+            }
+        }
+
+        function addWorker() {
+            const worker = {
+                id: document.getElementById('workerId').value,
+                name: document.getElementById('workerName').value,
+                jobTitle: document.getElementById('jobTitle').value,
+                workingHours: document.getElementById('workingHours').value,
+                specialization: document.getElementById('specialization').value || 'N/A',
+                contact: document.getElementById('contactNumber').value
+            };
+            workers.push(worker);
+            document.getElementById('workerResult').innerHTML = 'Worker added successfully!';
+            clearForm('addWorker');
+        }
+
+        function searchWorker() {
+            const searchId = document.getElementById('searchWorkerId').value;
+            const worker = workers.find(w => w.id === searchId);
+            const resultDiv = document.getElementById('searchWorkerResult');
+            if (worker) {
+                resultDiv.innerHTML = `
+                    <p><strong>Name:</strong> ${worker.name}</p>
+                    <p><strong>Job Title:</strong> ${worker.jobTitle}</p>
+                    <p><strong>Hours:</strong> ${worker.workingHours}</p>
+                    <p><strong>Specialization:</strong> ${worker.specialization}</p>
+                    <p><strong>Contact:</strong> ${worker.contact}</p>
+                `;
+            } else {
+                resultDiv.innerHTML = 'Worker not found!';
+            }
+        }
+
+        // Online Functions
+        function addHospital() {
+            const hospital = {
+                name: document.getElementById('hospitalName').value,
+                location: document.getElementById('hospitalLocation').value,
+                contact: document.getElementById('hospitalContact').value,
+                availability: document.getElementById('hospitalAvailability').value
+            };
+            hospitals.push(hospital);
+            document.getElementById('hospitalEntryResult').innerHTML = 'Hospital data added successfully!';
+            clearForm('hospitalEntry');
+        }
+
+        function searchHospital() {
+            const location = document.getElementById('searchHospitalLocation').value.toLowerCase();
+            const filtered = hospitals.filter(h => h.location.toLowerCase() === location);
+            const resultDiv = document.getElementById('hospitalSearchResult');
+            if (filtered.length > 0) {
+                resultDiv.innerHTML = filtered.map(h => `
+                    <div>
+                        <p><strong>Name:</strong> ${h.name}</p>
+                        <p><strong>Contact:</strong> ${h.contact}</p>
+                        <p><strong>Availability:</strong> ${h.availability}</p>
+                    </div>
+                `).join('');
+            } else {
+                resultDiv.innerHTML = 'No hospitals found!';
+            }
+        }
+
+        function addAmbulance() {
+            const ambulance = {
+                name: document.getElementById('ambulanceName').value,
+                driver: document.getElementById('driverName').value,
+                contact: document.getElementById('ambulanceContact').value,
+                location: document.getElementById('ambulanceLocation').value,
+                availability: document.getElementById('ambulanceAvailability').value,
+                status: document.getElementById('ambulanceStatus').value
+            };
+            ambulances.push(ambulance);
+            document.getElementById('ambulanceEntryResult').innerHTML = 'Ambulance added successfully!';
+            clearForm('ambulanceEntry');
+        }
+
+        function searchAmbulance() {
+            const location = document.getElementById('searchAmbulanceLocation').value.toLowerCase();
+            const filtered = ambulances.filter(a => a.location.toLowerCase() === location);
+            const resultDiv = document.getElementById('ambulanceSearchResult');
+            if (filtered.length > 0) {
+                resultDiv.innerHTML = filtered.map(a => `
+                    <div>
+                        <p><strong>Name:</strong> ${a.name}</p>
+                        <p><strong>Driver:</strong> ${a.driver}</p>
+                        <p><strong>Contact:</strong> ${a.contact}</p>
+                        <p><strong>Availability:</strong> ${a.availability}</p>
+                        <p><strong>Status:</strong> ${a.status}</p>
+                    </div>
+                `).join('');
+            } else {
+                resultDiv.innerHTML = 'No ambulances found!';
+            }
+        }
+
+        function addBlood() {
+            const blood = {
+                group: document.getElementById('bloodGroup').value,
+                bankName: document.getElementById('bloodBankName').value,
+                contact: document.getElementById('bloodContact').value,
+                location: document.getElementById('bloodLocation').value,
+                availability: document.getElementById('bloodAvailability').value,
+                status: document.getElementById('bloodStatus').value
+            };
+            bloodBanks.push(blood);
+            document.getElementById('bloodEntryResult').innerHTML = 'Blood data added successfully!';
+            clearForm('bloodEntry');
+        }
+
+        function searchBlood() {
+            const location = document.getElementById('searchBloodLocation').value.toLowerCase();
+            const filtered = bloodBanks.filter(b => b.location.toLowerCase() === location);
+            const resultDiv = document.getElementById('bloodSearchResult');
+            if (filtered.length > 0) {
+                resultDiv.innerHTML = filtered.map(b => `
+                    <div>
+                        <p><strong>Group:</strong> ${b.group}</p>
+                        <p><strong>Bank Name:</strong> ${b.bankName}</p>
+                        <p><strong>Contact:</strong> ${b.contact}</p>
+                        <p><strong>Availability:</strong> ${b.availability}</p>
+                        <p><strong>Status:</strong> ${b.status}</p>
+                    </div>
+                `).join('');
+            } else {
+                resultDiv.innerHTML = 'No blood banks found!';
+            }
+        }
+
+        function addDoctor() {
+            const doctor = {
+                name: document.getElementById('doctorName').value,
+                specialization: document.getElementById('doctorSpecialization').value,
+                contact: document.getElementById('doctorContact').value,
+                location: document.getElementById('doctorLocation').value,
+                availability: document.getElementById('doctorAvailability').value,
+                fees: document.getElementById('doctorFees').value,
+                status: document.getElementById('doctorStatus').value
+            };
+            doctors.push(doctor);
+            document.getElementById('doctorEntryResult').innerHTML = 'Doctor added successfully!';
+            clearForm('doctorEntry');
+        }
+
+        function searchDoctor() {
+            const location = document.getElementById('searchDoctorLocation').value.toLowerCase();
+            const filtered = doctors.filter(d => d.location.toLowerCase() === location);
+            const resultDiv = document.getElementById('doctorSearchResult');
+            if (filtered.length > 0) {
+                resultDiv.innerHTML = filtered.map(d => `
+                    <div>
+                        <p><strong>Name:</strong> ${d.name}</p>
+                        <p><strong>Specialization:</strong> ${d.specialization}</p>
+                        <p><strong>Contact:</strong> ${d.contact}</p>
+                        <p><strong>Availability:</strong> ${d.availability}</p>
+                        <p><strong>Fees:</strong> ${d.fees}</p>
+                        <p><strong>Status:</strong> ${d.status}</p>
+                    </div>
+                `).join('');
+            } else {
+                resultDiv.innerHTML = 'No doctors found!';
+            }
+        }
+
+        function reportSymptom() {
+            const patient = {
+                id: document.getElementById('patientId').value,
+                name: document.getElementById('patientName').value,
+                age: document.getElementById('patientAge').value,
+                symptom: document.getElementById('patientSymptom').value
+            };
+            patients.push(patient);
+            document.getElementById('symptomResult').innerHTML = 'Symptom reported successfully!';
+            clearForm('patientSymptom');
+        }
+
+        function doctorSearchPatient() {
+            const patientId = document.getElementById('doctorSearchPatientId').value;
+            const patient = patients.find(p => p.id === patientId);
+            const resultDiv = document.getElementById('doctorSearchPatientResult');
+            if (patient) {
+                resultDiv.innerHTML = `
+                    <p><strong>Name:</strong> ${patient.name}</p>
+                    <p><strong>Age:</strong> ${patient.age}</p>
+                    <p><strong>Symptom:</strong> ${patient.symptom}</p>
+                `;
+            } else {
+                resultDiv.innerHTML = 'Patient not found!';
+            }
+        }
+
+        function addPrescription() {
+            const prescription = {
+                patientId: document.getElementById('prescriptionPatientId').value,
+                medicine: document.getElementById('medicineName').value,
+                time: document.getElementById('medicineTime').value,
+                dose: document.getElementById('medicineDose').value,
+                days: document.getElementById('medicineDays').value
+            };
+            prescriptions.push(prescription);
+            document.getElementById('prescriptionResult').innerHTML = 'Prescription added successfully!';
+            clearForm('doctorPrescription');
+        }
+
+        function viewPrescription() {
+            const patientId = document.getElementById('patientPrescriptionId').value;
+            const patient = patients.find(p => p.id === patientId);
+            const prescription = prescriptions.find(p => p.patientId === patientId);
+            const resultDiv = document.getElementById('patientPrescriptionResult');
+            if (patient) {
+                if (prescription) {
+                    resultDiv.innerHTML = `
+                        <p><strong>Patient:</strong> ${patient.name}</p>
+                        <p><strong>Age:</strong> ${patient.age}</p>
+                        <p><strong>Symptom:</strong> ${patient.symptom}</p>
+                        <p><strong>Medicine:</strong> ${prescription.medicine}</p>
+                        <p><strong>Time:</strong> ${prescription.time}</p>
+                        <p><strong>Dose:</strong> ${prescription.dose}</p>
+                        <p><strong>Days:</strong> ${prescription.days}</p>
+                    `;
+                } else {
+                    resultDiv.innerHTML = 'No prescription found!';
+                }
+            } else {
+                resultDiv.innerHTML = 'Patient not found!';
+            }
+        }
+
+        function redirectMedex() {
+            const medicine = document.getElementById('medicineRedirect').value;
+            window.open(`https://medex.com.bd/search?search=${encodeURIComponent(medicine)}`, '_blank');
+        }
+
+        function clearForm(sectionId) {
+            const inputs = document.querySelectorAll(`#${sectionId} input, #${sectionId} textarea`);
+            inputs.forEach(input => input.value = '');
+        }
+
+        // Initial setup
+        document.getElementById('addRoom').classList.remove('hidden');
+    </script>
+</body>
+</html>

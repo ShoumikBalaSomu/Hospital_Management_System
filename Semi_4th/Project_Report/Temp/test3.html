@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Hospital Management System v2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Add Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary-color: #0d6efd; /* Slightly brighter Bootstrap blue */
+            --primary-hover: #0b5ed7;
+            --secondary-color: #6c757d; /* Medium Gray */
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #212529;
+            --text-color: #212529;
+            --success-color: #198754; /* Bootstrap green */
+            --error-color: #dc3545;   /* Bootstrap red */
+            --sidebar-bg: #ffffff; /* White sidebar */
+            --sidebar-text: #343a40;
+            --sidebar-active-bg: #e9f2ff; /* Lighter blue for active item */
+            --sidebar-active-border: var(--primary-color);
+            --border-color: #dee2e6;
+            --card-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.09);
+            --border-radius: 6px; /* Slightly smaller radius */
+            --transition-speed: 0.2s ease-in-out;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            line-height: 1.6;
+            font-size: 15px; /* Base font size */
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 250px 1fr; /* Standard sidebar width */
+            min-height: 100vh;
+            background-color: var(--border-color);
+            gap: 1px;
+        }
+
+        .sidebar {
+            background: var(--sidebar-bg);
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.03); /* Subtle shadow */
+            overflow-y: auto; /* Allow scrolling if many items */
+        }
+
+        .sidebar-logo {
+             font-size: 1.4em;
+             font-weight: 600;
+             color: var(--primary-color);
+             padding: 0 10px 20px 10px; /* Add padding */
+             text-align: center;
+             border-bottom: 1px solid var(--medium-gray);
+             margin-bottom: 20px;
+        }
+         /* Optional: Hide logo text if needed and show only an icon */
+         .sidebar-logo i {
+             margin-right: 8px;
+         }
+
+
+        .sidebar h2 {
+            color: var(--secondary-color);
+            margin-bottom: 8px;
+            margin-top: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            padding: 0 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+         .sidebar h2:first-of-type {
+             margin-top: 0;
+         }
+
+        .sidebar button {
+            width: 100%;
+            padding: 10px 15px;
+            margin: 3px 0;
+            background: transparent;
+            border: none;
+            border-left: 3px solid transparent; /* Thinner active indicator */
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--sidebar-text);
+            transition: background-color var(--transition-speed), color var(--transition-speed), border-left-color var(--transition-speed);
+            display: flex; /* Use flex for icon alignment */
+            align-items: center;
+            gap: 12px; /* Space between icon and text */
+        }
+        .sidebar button i {
+             width: 16px; /* Fixed width for icon alignment */
+             text-align: center;
+             color: var(--secondary-color); /* Default icon color */
+             transition: color var(--transition-speed);
+         }
+
+        .sidebar button:hover {
+            background-color: var(--medium-gray);
+            color: var(--primary-hover);
+        }
+         .sidebar button:hover i {
+             color: var(--primary-hover);
+         }
+
+        .sidebar button.active {
+            background-color: var(--sidebar-active-bg);
+            color: var(--primary-color);
+            border-left-color: var(--sidebar-active-border);
+            font-weight: 600;
+        }
+        .sidebar button.active i {
+            color: var(--primary-color);
+        }
+
+        .main-content {
+            padding: 0; /* Remove outer padding, add inside header/sections */
+            background-color: var(--light-gray);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+         .main-header {
+            background-color: #ffffff;
+             padding: 15px 30px;
+             border-bottom: 1px solid var(--border-color);
+             box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+             margin-bottom: 30px;
+             position: sticky; /* Keep header visible while scrolling */
+             top: 0;
+             z-index: 10; /* Ensure it stays above cards */
+         }
+
+         .main-header h1 {
+             font-size: 1.5em;
+             font-weight: 600;
+             color: var(--dark-gray);
+         }
+
+        .content-area {
+            padding: 0 30px 30px 30px; /* Content padding below header */
+            flex-grow: 1; /* Take remaining space */
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            margin-bottom: 25px;
+            padding: 25px 30px;
+            border: 1px solid var(--border-color);
+            transition: box-shadow var(--transition-speed);
+        }
+         .card:hover {
+             box-shadow: var(--card-shadow-hover);
+         }
+
+        .card h3 { /* Card title styling */
+            margin-bottom: 25px;
+            color: var(--dark-gray);
+            font-size: 1.15em; /* Slightly smaller card titles */
+            font-weight: 600;
+            border-bottom: 1px solid var(--medium-gray);
+            padding-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--secondary-color);
+            font-size: 0.85em; /* Smaller label */
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="email"],
+        .form-group input[type="password"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px; /* Slightly less padding */
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 0.95em;
+            transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+            background-color: #fff; /* Ensure white background */
+        }
+        /* Subtle placeholder style */
+         .form-group ::placeholder {
+             color: #adb5bd;
+             opacity: 1;
+         }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.2); /* Softer focus ring */
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.95em;
+            transition: background-color var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
+            display: inline-flex; /* Align icon and text if icon is added */
+            align-items: center;
+             gap: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.07); /* Button shadow */
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .btn:active {
+            transform: translateY(0px);
+             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Button variants if needed later
+        .btn-secondary { background: var(--secondary-color); }
+        .btn-secondary:hover { background: #5a6268; } */
+
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: var(--light-gray); /* Use light gray */
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            min-height: 60px; /* Smaller min-height */
+            font-size: 0.9em;
+            color: var(--text-color); /* Use standard text color */
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        /* Default state message */
+         .result-box:empty::before {
+            content: "Results will appear here...";
+            color: var(--secondary-color);
+            font-style: italic;
+        }
+
+         .result-box p {
+             margin-bottom: 8px;
+         }
+         .result-box p:last-child {
+             margin-bottom: 0;
+         }
+         .result-box strong {
+            color: var(--primary-color); /* Highlight labels in primary color */
+            font-weight: 500;
+         }
+
+         /* Specific styling for alerts */
+         .result-box .alert {
+             padding: 10px 15px;
+             margin-bottom: 0; /* Replace paragraph margin */
+             border-radius: var(--border-radius);
+             font-weight: 500;
+             border: 1px solid transparent;
+         }
+        .result-box .alert-success {
+            color: #0f5132;
+            background-color: #d1e7dd;
+            border-color: #badbcc;
+        }
+        .result-box .alert-error {
+            color: #842029;
+            background-color: #f8d7da;
+            border-color: #f5c2c7;
+        }
+
+         /* Styling for list results (like searches) */
+         .result-list-item {
+             border-bottom: 1px solid var(--medium-gray);
+             padding: 15px 0;
+             margin-bottom: 15px;
+         }
+         .result-list-item:last-child {
+             border-bottom: none;
+             margin-bottom: 0;
+             padding-bottom: 0;
+         }
+         .result-list-item p {
+            margin-bottom: 5px;
+             font-size: 0.9em;
+             line-height: 1.5;
+         }
+        .result-list-item p strong {
+            display: inline-block; /* Better alignment */
+             min-width: 100px; /* Align values */
+             margin-right: 5px;
+         }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) { /* Tablet and below */
+             .container {
+                 grid-template-columns: 1fr; /* Stack layout */
+                 gap: 0;
+             }
+             .sidebar {
+                /* Consider making sidebar collapsible here instead of just stacking */
+                border-right: none;
+                 border-bottom: 1px solid var(--border-color);
+                 max-height: 50vh; /* Limit height */
+                 box-shadow: none;
+                 overflow-y: auto; /* Ensure scroll if needed */
+             }
+            .main-header {
+                position: static; /* Don't stick header on mobile */
+                 margin-bottom: 20px;
+            }
+            .content-area {
+                 padding: 0 20px 20px 20px; /* Adjust padding */
+            }
+            .main-header h1 { font-size: 1.3em; }
+            .card { padding: 20px; }
+         }
+
+         @media (max-width: 576px) { /* Small devices */
+            .sidebar {
+                 padding: 15px 5px; /* Less padding */
+             }
+            .sidebar button {
+                padding: 8px 10px;
+                 gap: 8px;
+                font-size: 0.85rem;
+            }
+            .sidebar h2 {
+                 padding: 0 10px;
+             }
+            .main-header { padding: 15px; }
+            .content-area { padding: 0 15px 15px 15px; }
+            .btn { padding: 8px 15px; font-size: 0.9em; }
+            .form-group input, .form-group select, .form-group textarea {
+                padding: 8px 10px;
+                 font-size: 0.9em;
+             }
+         }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-logo">
+                <i class="fas fa-hospital"></i> MHMS V2
+            </div>
+
+            <h2><i class="fas fa-building"></i> Hospital Internal</h2>
+            <button onclick="showSection('addRoom')" data-title="Add Room Information"><i class="fas fa-door-open"></i>Add Room</button>
+            <button onclick="showSection('viewRoom')" data-title="View Room Information"><i class="fas fa-binoculars"></i>View Room</button>
+            <button onclick="showSection('addWorker')" data-title="Add Worker Information"><i class="fas fa-user-plus"></i>Add Worker</button>
+            <button onclick="showSection('searchWorker')" data-title="Search Worker"><i class="fas fa-user-magnifying-glass"></i>Search Worker</button>
+
+            <h2><i class="fas fa-globe"></i> Online Services</h2>
+            <button onclick="showSection('hospitalEntry')" data-title="Hospital Data Entry"><i class="fas fa-hospital-user"></i>Hospital Entry</button>
+            <button onclick="showSection('hospitalSearch')" data-title="Search Hospital"><i class="fas fa-magnifying-glass-location"></i>Hospital Search</button>
+            <button onclick="showSection('ambulanceEntry')" data-title="Ambulance Data Entry"><i class="fas fa-truck-medical"></i>Ambulance Entry</button>
+            <button onclick="showSection('ambulanceSearch')" data-title="Search Ambulance"><i class="fas fa-magnifying-glass-plus"></i>Ambulance Search</button>
+            <button onclick="showSection('bloodEntry')" data-title="Blood Bank Entry"><i class="fas fa-tint"></i>Blood Entry</button>
+            <button onclick="showSection('bloodSearch')" data-title="Search Blood Bank"><i class="fas fa-magnifying-glass-chart"></i>Blood Search</button>
+            <button onclick="showSection('doctorEntry')" data-title="Doctor Data Entry"><i class="fas fa-user-doctor"></i>Doctor Entry</button>
+            <button onclick="showSection('doctorSearch')" data-title="Search Doctor"><i class="fas fa-stethoscope"></i>Doctor Search</button>
+            <button onclick="showSection('patientSymptom')" data-title="Patient Symptom Report"><i class="fas fa-file-medical"></i>Patient Symptom</button>
+            <button onclick="showSection('doctorSearchPatient')" data-title="Doctor: Search Patient"><i class="fas fa-magnifying-glass-arrow-right"></i>Doctor Search Patient</button>
+            <button onclick="showSection('doctorPrescription')" data-title="Doctor: Add Prescription"><i class="fas fa-file-prescription"></i>Doctor Prescription</button>
+            <button onclick="showSection('patientPrescription')" data-title="Patient: View Prescription"><i class="fas fa-notes-medical"></i>Patient Prescription</button>
+            <button onclick="showSection('medex')" data-title="Search Medicine (Medex)"><i class="fas fa-pills"></i>Medex Redirect</button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+             <!-- Header area: Title updates dynamically -->
+             <div class="main-header">
+                <h1 id="main-title">Section Title</h1>
+            </div>
+
+             <!-- Content Area: Cards go inside here -->
+             <div class="content-area">
+
+                <!-- Add Room Section -->
+                <div id="addRoom" class="card hidden">
+                    <h3><i class="fas fa-door-open"></i> Add Room Information</h3>
+                    <div class="form-group">
+                        <label for="roomNumber">Room Number:</label>
+                        <input type="text" id="roomNumber" placeholder="e.g., 301">
+                    </div>
+                    <div class="form-group">
+                        <label for="roomType">Room Type:</label>
+                        <select id="roomType">
+                            <option value="AC">AC</option>
+                            <option value="Non-AC">Non-AC</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="roomAvailability">Availability:</label>
+                        <select id="roomAvailability">
+                            <option value="Available">Available</option>
+                            <option value="Occupied">Occupied</option>
+                             <option value="Cleaning">Cleaning</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="roomFor">Room For (e.g., Male Ward, ICU):</label>
+                        <input type="text" id="roomFor" placeholder="e.g., Male General Ward">
+                    </div>
+                    <div class="form-group">
+                        <label for="roomCapacity">Capacity per Patient (Beds):</label>
+                        <input type="number" id="roomCapacity" placeholder="e.g., 2">
+                    </div>
+                    <button class="btn" onclick="addRoom()"><i class="fas fa-plus-circle"></i> Submit</button>
+                    <div class="result-box" id="roomResult"></div>
+                </div>
+
+                <!-- View Room Section -->
+                <div id="viewRoom" class="card hidden">
+                    <h3><i class="fas fa-binoculars"></i> View Room Information</h3>
+                    <div class="form-group">
+                        <label for="searchRoomNumber">Enter Room Number:</label>
+                        <input type="text" id="searchRoomNumber" placeholder="e.g., 301">
+                    </div>
+                    <button class="btn" onclick="viewRoom()"><i class="fas fa-search"></i> Search</button>
+                    <div class="result-box" id="viewRoomResult"></div>
+                </div>
+
+                <!-- Add Worker Section -->
+                 <div id="addWorker" class="card hidden">
+                    <h3><i class="fas fa-user-plus"></i> Add Worker Information</h3>
+                    <div class="form-group">
+                        <label for="workerId">Worker ID:</label>
+                        <input type="text" id="workerId" placeholder="e.g., EMP102">
+                    </div>
+                    <div class="form-group">
+                        <label for="workerName">Name:</label>
+                        <input type="text" id="workerName" placeholder="e.g., Jane Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="jobTitle">Job Title:</label>
+                        <input type="text" id="jobTitle" placeholder="e.g., Nurse, Receptionist, Doctor">
+                    </div>
+                    <div class="form-group">
+                        <label for="workingHours">Working Hours:</label>
+                        <input type="text" id="workingHours" placeholder="e.g., 9am - 5pm">
+                    </div>
+                    <div class="form-group">
+                        <label for="specialization">Specialization (if Doctor):</label>
+                        <input type="text" id="specialization" placeholder="N/A if not applicable">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactNumber">Contact Number:</label>
+                        <input type="text" id="contactNumber" placeholder="e.g., 01xxxxxxxxx">
+                    </div>
+                    <button class="btn" onclick="addWorker()"><i class="fas fa-plus-circle"></i> Submit</button>
+                    <div class="result-box" id="workerResult"></div>
+                </div>
+
+                 <!-- Search Worker Section -->
+                <div id="searchWorker" class="card hidden">
+                    <h3><i class="fas fa-user-magnifying-glass"></i> Search Worker</h3>
+                    <div class="form-group">
+                        <label for="searchWorkerId">Enter Worker ID:</label>
+                        <input type="text" id="searchWorkerId" placeholder="e.g., EMP102">
+                    </div>
+                    <button class="btn" onclick="searchWorker()"><i class="fas fa-search"></i> Search</button>
+                    <div class="result-box" id="searchWorkerResult"></div>
+                </div>
+
+                <!-- Hospital Entry -->
+                 <div id="hospitalEntry" class="card hidden">
+                    <h3><i class="fas fa-hospital-user"></i> Hospital Data Entry</h3>
+                    <div class="form-group">
+                        <label for="hospitalName">Name:</label>
+                        <input type="text" id="hospitalName" placeholder="e.g., City General Hospital">
+                    </div>
+                    <div class="form-group">
+                        <label for="hospitalLocation">Location:</label>
+                        <input type="text" id="hospitalLocation" placeholder="e.g., Main Street, Downtown">
+                    </div>
+                    <div class="form-group">
+                        <label for="hospitalContact">Contact:</label>
+                        <input type="text" id="hospitalContact" placeholder="e.g., +1 555 1234">
+                    </div>
+                    <div class="form-group">
+                        <label for="hospitalAvailability">Availability Status:</label>
+                        <select id="hospitalAvailability">
+                            <option value="Available">Accepting Patients</option>
+                            <option value="Full">Currently Full</option>
+                            <option value="Emergency Only">Emergency Only</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="addHospital()"><i class="fas fa-plus-circle"></i> Submit</button>
+                    <div class="result-box" id="hospitalEntryResult"></div>
+                </div>
+
+                <!-- Hospital Search -->
+                 <div id="hospitalSearch" class="card hidden">
+                    <h3><i class="fas fa-magnifying-glass-location"></i> Search Hospital</h3>
+                    <div class="form-group">
+                        <label for="searchHospitalLocation">Search by Location (or part of name):</label>
+                        <input type="text" id="searchHospitalLocation" placeholder="e.g., Downtown">
+                    </div>
+                    <button class="btn" onclick="searchHospital()"><i class="fas fa-search"></i> Search</button>
+                    <div class="result-box" id="hospitalSearchResult"></div>
+                </div>
+
+                 <!-- Ambulance Entry -->
+                <div id="ambulanceEntry" class="card hidden">
+                    <h3><i class="fas fa-truck-medical"></i> Ambulance Data Entry</h3>
+                    <div class="form-group">
+                        <label for="ambulanceName">Provider Name/Service:</label>
+                        <input type="text" id="ambulanceName" placeholder="e.g., Fast Response EMS">
+                    </div>
+                    <div class="form-group">
+                        <label for="driverName">Driver Name (Optional):</label>
+                        <input type="text" id="driverName">
+                    </div>
+                    <div class="form-group">
+                        <label for="ambulanceContact">Contact Number:</label>
+                        <input type="text" id="ambulanceContact" placeholder="e.g., +1 555 5678">
+                    </div>
+                    <div class="form-group">
+                        <label for="ambulanceLocation">Base Location:</label>
+                        <input type="text" id="ambulanceLocation" placeholder="e.g., North District">
+                    </div>
+                    <div class="form-group">
+                        <label for="ambulanceAvailability">Current Availability:</label>
+                        <select id="ambulanceAvailability">
+                            <option value="Available">Available</option>
+                            <option value="On Duty">On Duty</option>
+                            <option value="Unavailable">Unavailable</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ambulanceStatus">Vehicle Type / Status:</label>
+                        <input type="text" id="ambulanceStatus" placeholder="e.g., AC, Basic Life Support">
+                    </div>
+                    <button class="btn" onclick="addAmbulance()"><i class="fas fa-plus-circle"></i> Submit</button>
+                    <div class="result-box" id="ambulanceEntryResult"></div>
+                </div>
+
+                 <!-- Ambulance Search -->
+                 <div id="ambulanceSearch" class="card hidden">
+                    <h3><i class="fas fa-magnifying-glass-plus"></i> Search Ambulance</h3>
+                    <div class="form-group">
+                        <label for="searchAmbulanceLocation">Search by Location:</label>
+                        <input type="text" id="searchAmbulanceLocation" placeholder="e.g., North District">
+                    </div>
+                    <button class="btn" onclick="searchAmbulance()"><i class="fas fa-search"></i> Search</button>
+                    <div class="result-box" id="ambulanceSearchResult"></div>
+                </div>
+
+                 <!-- Blood Entry -->
+                 <div id="bloodEntry" class="card hidden">
+                    <h3><i class="fas fa-tint"></i> Blood Bank Entry</h3>
+                     <div class="form-group">
+                        <label for="bloodBankName">Blood Bank Name / Hospital Affiliation:</label>
+                        <input type="text" id="bloodBankName" placeholder="e.g., Red Cross Center, City Hospital Bank">
+                    </div>
+                    <div class="form-group">
+                        <label for="bloodGroup">Blood Group:</label>
+                        <select id="bloodGroup">
+                            <option value="A+">A+</option> <option value="A-">A-</option>
+                            <option value="B+">B+</option> <option value="B-">B-</option>
+                            <option value="AB+">AB+</option> <option value="AB-">AB-</option>
+                            <option value="O+">O+</option> <option value="O-">O-</option>
+                        </select>
+                    </div>
+                     <div class="form-group">
+                         <label for="bloodUnits">Available Units (Optional):</label>
+                         <input type="number" id="bloodUnits" placeholder="e.g., 10">
+                     </div>
+                    <div class="form-group">
+                        <label for="bloodContact">Contact Number:</label>
+                        <input type="text" id="bloodContact" placeholder="e.g., +1 555 8765">
+                    </div>
+                    <div class="form-group">
+                        <label for="bloodLocation">Location:</label>
+                        <input type="text" id="bloodLocation" placeholder="e.g., West Avenue">
+                    </div>
+                     <div class="form-group">
+                        <label for="bloodAvailability">Current Stock Level:</label>
+                        <select id="bloodAvailability">
+                             <option value="Available">Available</option>
+                             <option value="Low Stock">Low Stock</option>
+                            <option value="Unavailable">Unavailable</option>
+                         </select>
+                    </div>
+                     <!-- Removed Status field, merged info into other fields or implicit -->
+                    <button class="btn" onclick="addBlood()"><i class="fas fa-plus-circle"></i> Submit</button>
+                    <div class="result-box" id="bloodEntryResult"></div>
+                </div>
+
+                 <!-- Blood Search -->
+                 <div id="bloodSearch" class="card hidden">
+                    <h3><i class="fas fa-magnifying-glass-chart"></i> Search Blood Bank</h3>
+                     <div class="form-group">
+                        <label for="searchBloodLocation">Search by Location:</label>
+                        <input type="text" id="searchBloodLocation" placeholder="e.g., West Avenue">
+                    </div>
+                     <div class="form-group">
+                        <label for="searchBloodGroup">Filter by Blood Group (Optional):</label>
+                        <select id="searchBloodGroup">
+                            <option value="">Any</option>
+                            <option value="A+">A+</option> <option value="A-">A-</option>
+                            <option value="B+">B+</option> <option value="B-">B-</option>
+                            <option value="AB+">AB+</option> <option value="AB-">AB-</option>
+                            <option value="O+">O+</option> <option value="O-">O-</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="searchBlood()"><i class="fas fa-search"></i> Search</button>
+                    <div class="result-box" id="bloodSearchResult"></div>
+                </div>
+
+                <!-- Doctor Entry -->
+                 <div id="doctorEntry" class="card hidden">
+                    <h3><i class="fas fa-user-doctor"></i> Doctor Data Entry</h3>
+                    <div class="form-group">
+                        <label for="doctorName">Doctor's Full Name:</label>
+                        <input type="text" id="doctorName" placeholder="e.g., Dr. Emily Carter">
+                    </div>
+                    <div class="form-group">
+                        <label for="doctorSpecialization">Specialization:</label>
+                        <input type="text" id="doctorSpecialization" placeholder="e.g., Cardiologist, Pediatrician">
+                    </div>
+                    <div class="form-group">
+                        <label for="doctorContact">Contact Number:</label>
+                        <input type="text" id="doctorContact" placeholder="e.g., 01xxxxxxxxx">
+                    </div>
+                    <div class="form-group">
+                        <label for="doctorLocation">Clinic/Hospital Location:</label>
+                        <input type="text" id="doctorLocation" placeholder="e.g., Health Point Clinic, Sector 7">
+                    </div>
+                    <div class="form-group">
+                        <label for="doctorAvailability">Visiting Hours / Schedule:</label>
+                         <input type="text" id="doctorAvailability" placeholder="e.g., Mon-Fri 10am-1pm, 5pm-8pm">
+                    </div>
+                    <div class="form-group">
+                        <label for="doctorFees">Consultation Fees (approx.):</label>
+                        <input type="number" id="doctorFees" placeholder="e.g., 1000">
+                    </div>
+                    <div class="form-group">
+                        <label for="doctorStatus">Additional Info:</label>
+                        <input type="text" id="doctorStatus" placeholder="e.g., Accepts new patients, Telemedicine available">
+                    </div>
+                    <button class="btn" onclick="addDoctor()"><i class="fas fa-plus-circle"></i> Submit</button>
+                    <div class="result-box" id="doctorEntryResult"></div>
+                </div>
+
+                 <!-- Doctor Search -->
+                <div id="doctorSearch" class="card hidden">
+                    <h3><i class="fas fa-stethoscope"></i> Search Doctor</h3>
+                    <div class="form-group">
+                        <label for="searchDoctorLocation">Search by Location:</label>
+                        <input type="text" id="searchDoctorLocation" placeholder="e.g., Sector 7">
+                    </div>
+                    <div class="form-group">
+                        <label for="searchDoctorSpecialization">Filter by Specialization (Optional):</label>
+                        <input type="text" id="searchDoctorSpecialization" placeholder="e.g., Cardiologist">
+                    </div>
+                    <button class="btn" onclick="searchDoctor()"><i class="fas fa-search"></i> Search</button>
+                    <div class="result-box" id="doctorSearchResult"></div>
+                </div>
+
+                 <!-- Patient Symptom -->
+                 <div id="patientSymptom" class="card hidden">
+                    <h3><i class="fas fa-file-medical"></i> Patient Symptom Report</h3>
+                    <div class="form-group">
+                        <label for="patientId">Patient ID (If known):</label>
+                        <input type="text" id="patientId" placeholder="e.g., PAT789">
+                    </div>
+                    <div class="form-group">
+                        <label for="patientName">Patient Full Name:</label>
+                        <input type="text" id="patientName" placeholder="e.g., John Smith">
+                    </div>
+                    <div class="form-group">
+                        <label for="patientAge">Age:</label>
+                        <input type="number" id="patientAge" placeholder="e.g., 45">
+                    </div>
+                     <div class="form-group">
+                         <label for="patientGender">Gender:</label>
+                        <select id="patientGender">
+                            <option value="Male">Male</option>
+                             <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                             <option value="Prefer not to say">Prefer not to say</option>
+                        </select>
+                     </div>
+                    <div class="form-group">
+                        <label for="patientSymptom">Describe Symptoms:</label>
+                        <textarea id="patientSymptom" placeholder="Describe the symptoms in detail, including onset and duration..."></textarea>
+                    </div>
+                    <button class="btn" onclick="reportSymptom()"><i class="fas fa-paper-plane"></i> Submit Report</button>
+                    <div class="result-box" id="symptomResult"></div>
+                </div>
+
+                <!-- Doctor Search Patient -->
+                 <div id="doctorSearchPatient" class="card hidden">
+                    <h3><i class="fas fa-magnifying-glass-arrow-right"></i> Doctor: Search Patient Symptom Report</h3>
+                    <div class="form-group">
+                        <label for="doctorSearchPatientId">Enter Patient ID:</label>
+                        <input type="text" id="doctorSearchPatientId" placeholder="e.g., PAT789">
+                    </div>
+                    <button class="btn" onclick="doctorSearchPatient()"><i class="fas fa-search"></i> Search Patient</button>
+                    <div class="result-box" id="doctorSearchPatientResult"></div>
+                </div>
+
+                <!-- Doctor Prescription -->
+                 <div id="doctorPrescription" class="card hidden">
+                    <h3><i class="fas fa-file-prescription"></i> Doctor: Add Prescription</h3>
+                    <div class="form-group">
+                        <label for="prescriptionPatientId">Enter Patient ID:</label>
+                        <input type="text" id="prescriptionPatientId" placeholder="e.g., PAT789">
+                    </div>
+                    <div class="form-group">
+                        <label for="medicineName">Medicine Name:</label>
+                        <input type="text" id="medicineName" placeholder="e.g., Paracetamol">
+                    </div>
+                     <div class="form-group">
+                        <label for="medicineDose">Dosage:</label>
+                        <input type="text" id="medicineDose" placeholder="e.g., 500mg, 1 tablet">
+                    </div>
+                    <div class="form-group">
+                        <label for="medicineTime">Frequency / Timing:</label>
+                        <input type="text" id="medicineTime" placeholder="e.g., 1+0+1 (Morning + Noon + Night), Twice Daily">
+                    </div>
+                    <div class="form-group">
+                        <label for="medicineDays">Duration:</label>
+                        <input type="text" id="medicineDays" placeholder="e.g., 7 Days, As needed">
+                    </div>
+                    <div class="form-group">
+                        <label for="prescriptionNotes">Additional Notes (Optional):</label>
+                        <textarea id="prescriptionNotes" placeholder="e.g., Take after food, Avoid driving"></textarea>
+                    </div>
+                    <button class="btn" onclick="addPrescription()"><i class="fas fa-save"></i> Add Prescription</button>
+                    <div class="result-box" id="prescriptionResult"></div>
+                </div>
+
+                <!-- Patient Prescription -->
+                 <div id="patientPrescription" class="card hidden">
+                    <h3><i class="fas fa-notes-medical"></i> Patient: View Prescription</h3>
+                    <div class="form-group">
+                        <label for="patientPrescriptionId">Enter Your Patient ID:</label>
+                        <input type="text" id="patientPrescriptionId" placeholder="e.g., PAT789">
+                    </div>
+                    <button class="btn" onclick="viewPrescription()"><i class="fas fa-eye"></i> View My Prescription</button>
+                    <div class="result-box" id="patientPrescriptionResult"></div>
+                </div>
+
+                <!-- Medex Redirect -->
+                <div id="medex" class="card hidden">
+                    <h3><i class="fas fa-pills"></i> Search Medicine on Medex</h3>
+                    <p style="margin-bottom: 20px; color: var(--secondary-color);">This feature redirects you to the Medex Bangladesh website to search for detailed medicine information, indications, dosages, side effects, etc.</p>
+                    <div class="form-group">
+                        <label for="medicineRedirect">Medicine Name:</label>
+                        <input type="text" id="medicineRedirect" placeholder="e.g., Napa, Omeprazole">
+                    </div>
+                    <button class="btn" onclick="redirectMedex()"><i class="fas fa-external-link-alt"></i> Search on Medex</button>
+                    <div class="result-box" id="medexResult"></div>
+                </div>
+             </div> <!-- End Content Area -->
+
+        </div> <!-- End Main Content -->
+    </div>
+
+    <script>
+        // Data storage (using simple arrays for demo purposes)
+        const db = {
+            rooms: [],
+            workers: [],
+            hospitals: [],
+            ambulances: [],
+            bloodBanks: [],
+            doctors: [],
+            patients: [],
+            prescriptions: []
+        };
+
+        // Elements
+        const mainTitle = document.getElementById('main-title');
+
+        // Section switching and UI updates
+        function showSection(sectionId) {
+            // Hide all content cards
+            document.querySelectorAll('.content-area .card').forEach(card => card.classList.add('hidden'));
+
+            // Show the selected card
+            const activeCard = document.getElementById(sectionId);
+            if (activeCard) {
+                activeCard.classList.remove('hidden');
+                // Clear previous results when switching sections
+                 const resultBox = activeCard.querySelector('.result-box');
+                 if(resultBox) resultBox.innerHTML = ''; // Clear on section switch
+            }
+
+            // Update active state in sidebar and main title
+            document.querySelectorAll('.sidebar button').forEach(btn => {
+                 if (btn.getAttribute('onclick') === `showSection('${sectionId}')`) {
+                    btn.classList.add('active');
+                    // Update main header title using data-title attribute
+                    mainTitle.textContent = btn.dataset.title || 'Dashboard'; // Use data-title
+                 } else {
+                     btn.classList.remove('active');
+                 }
+            });
+
+            // Scroll main content to top (optional)
+            document.querySelector('.main-content').scrollTop = 0;
+        }
+
+        // Enhanced Utility to display results with styling
+         function displayResult(elementId, message, type = 'info') { // types: info, success, error, list, object
+             const resultDiv = document.getElementById(elementId);
+             if (!resultDiv) return;
+
+             resultDiv.innerHTML = ''; // Clear previous content
+
+            if (type === 'success') {
+                resultDiv.innerHTML = `<div class="alert alert-success">${message}</div>`;
+             } else if (type === 'error') {
+                 resultDiv.innerHTML = `<div class="alert alert-error">${message}</div>`;
+            } else if (type === 'object') {
+                let html = '<div class="result-list-item">'; // Wrap single object like a list item
+                for (const key in message) {
+                    const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+                    html += `<p><strong>${formattedKey}:</strong> ${message[key] || 'N/A'}</p>`;
+                 }
+                 html += '</div>';
+                resultDiv.innerHTML = html;
+             } else if (type === 'list' && Array.isArray(message) && message.length > 0) {
+                let html = '';
+                message.forEach(item => {
+                    html += '<div class="result-list-item">';
+                    for (const key in item) {
+                         const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+                        html += `<p><strong>${formattedKey}:</strong> ${item[key] || 'N/A'}</p>`;
+                    }
+                    html += '</div>';
+                });
+                resultDiv.innerHTML = html || `<div class="alert alert-error">No matching records found.</div>`; // Show message if list was empty after processing
+             } else if (type === 'list' && (!Array.isArray(message) || message.length === 0)) {
+                resultDiv.innerHTML = `<div class="alert alert-error">No matching records found.</div>`; // Handle empty array directly
+             } else if (type === 'html') { // Allow passing raw HTML if needed
+                 resultDiv.innerHTML = message;
+            } else { // Default to info (plain text)
+                 resultDiv.innerHTML = `<p>${message}</p>`;
+             }
+         }
+
+         function formatSearchResults(dataArray, fieldsToShow, messageIfEmpty = "No records found.") {
+            if (!dataArray || dataArray.length === 0) {
+                return `<div class="alert alert-error">${messageIfEmpty}</div>`;
+            }
+
+            let html = '';
+            dataArray.forEach(item => {
+                html += '<div class="result-list-item">';
+                fieldsToShow.forEach(field => {
+                    let key = field;
+                    let label = field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1');
+                     if(typeof field === 'object'){ // Allow {key: 'Label'} format
+                         key = Object.keys(field)[0];
+                         label = Object.values(field)[0];
+                     }
+                     // Special formatting (Example: Fees)
+                     let value = item[key] || 'N/A';
+                     if (key === 'fees' && value !== 'N/A') value = `BDT ${value}`;
+
+                    html += `<p><strong>${label}:</strong> ${value}</p>`;
+                });
+                html += '</div>';
+            });
+            return html;
+         }
+
+
+        // --- Functionality Implementation (Using 'db' object) ---
+
+        // Helper for simple validation
+        function validateRequired(fields, sectionId) {
+            for (const fieldId in fields) {
+                 const input = document.getElementById(fieldId);
+                 if (!input || !input.value.trim()) {
+                    displayResult(`${sectionId}Result`, `${fields[fieldId]} is required.`, 'error');
+                     input?.focus(); // Focus the first empty required field
+                    return false;
+                 }
+            }
+            return true;
+        }
+
+        // Helper to clear form
+         function clearForm(sectionId) {
+            const form = document.getElementById(sectionId);
+            if (form) {
+                form.querySelectorAll('input, textarea, select').forEach(el => {
+                    if (el.type === 'checkbox' || el.type === 'radio') el.checked = false;
+                    else if (el.tagName === 'SELECT') el.selectedIndex = 0;
+                    else el.value = '';
+                 });
+            }
+        }
+
+
+        // Hospital Internal Functions
+        function addRoom() {
+            if (!validateRequired({ roomNumber: 'Room Number', roomCapacity: 'Capacity' }, 'room')) return;
+            const roomData = {
+                number: document.getElementById('roomNumber').value,
+                type: document.getElementById('roomType').value,
+                availability: document.getElementById('roomAvailability').value,
+                roomFor: document.getElementById('roomFor').value || 'General', // Use default if empty
+                capacity: document.getElementById('roomCapacity').value
+            };
+            db.rooms.push(roomData);
+            displayResult('roomResult', `Room ${roomData.number} added successfully!`, 'success');
+            clearForm('addRoom');
+            console.log("Rooms:", db.rooms); // For debugging
+        }
+
+        function viewRoom() {
+             if (!validateRequired({ searchRoomNumber: 'Room Number' }, 'viewRoom')) return;
+             const searchNumber = document.getElementById('searchRoomNumber').value;
+             const room = db.rooms.find(r => r.number === searchNumber);
+             if (room) {
+                 displayResult('viewRoomResult', {
+                     Number: room.number,
+                     Type: room.type,
+                     Availability: room.availability,
+                     'For': room.roomFor, // Renamed for clarity
+                     Capacity: room.capacity + (room.capacity > 1 ? ' Beds' : ' Bed')
+                 }, 'object');
+             } else {
+                 displayResult('viewRoomResult', `Room number "${searchNumber}" not found.`, 'error');
+             }
+        }
+
+        function addWorker() {
+             if (!validateRequired({ workerId: 'Worker ID', workerName: 'Name', jobTitle: 'Job Title' }, 'worker')) return;
+            const workerData = {
+                id: document.getElementById('workerId').value,
+                name: document.getElementById('workerName').value,
+                jobTitle: document.getElementById('jobTitle').value,
+                workingHours: document.getElementById('workingHours').value,
+                specialization: document.getElementById('specialization').value || 'N/A',
+                contact: document.getElementById('contactNumber').value
+            };
+            db.workers.push(workerData);
+            displayResult('workerResult', `Worker ${workerData.name} (ID: ${workerData.id}) added successfully!`, 'success');
+            clearForm('addWorker');
+             console.log("Workers:", db.workers); // Debug
+        }
+
+        function searchWorker() {
+             if (!validateRequired({ searchWorkerId: 'Worker ID' }, 'searchWorker')) return;
+             const searchId = document.getElementById('searchWorkerId').value;
+             const worker = db.workers.find(w => w.id === searchId);
+             if (worker) {
+                 displayResult('searchWorkerResult', {
+                    ID: worker.id,
+                    Name: worker.name,
+                    'Job Title': worker.jobTitle,
+                    'Working Hours': worker.workingHours,
+                    Specialization: worker.specialization,
+                    Contact: worker.contact
+                 }, 'object');
+             } else {
+                displayResult('searchWorkerResult', `Worker with ID "${searchId}" not found.`, 'error');
+            }
+        }
+
+        // Online Functions
+        function addHospital() {
+             if (!validateRequired({ hospitalName: 'Name', hospitalLocation: 'Location', hospitalContact: 'Contact'}, 'hospitalEntry')) return;
+            const hospitalData = {
+                name: document.getElementById('hospitalName').value,
+                location: document.getElementById('hospitalLocation').value,
+                contact: document.getElementById('hospitalContact').value,
+                availability: document.getElementById('hospitalAvailability').value
+            };
+            db.hospitals.push(hospitalData);
+            displayResult('hospitalEntryResult', `Hospital "${hospitalData.name}" added successfully!`, 'success');
+            clearForm('hospitalEntry');
+             console.log("Hospitals:", db.hospitals); // Debug
+        }
+
+        function searchHospital() {
+            const searchTerm = document.getElementById('searchHospitalLocation').value.toLowerCase();
+             const filtered = db.hospitals.filter(h =>
+                h.location.toLowerCase().includes(searchTerm) ||
+                h.name.toLowerCase().includes(searchTerm) // Also search by name
+            );
+            const fields = ['name', 'location', 'contact', 'availability'];
+            displayResult('hospitalSearchResult', formatSearchResults(filtered, fields, "No hospitals found matching your criteria."), 'html');
+        }
+
+        function addAmbulance() {
+             if (!validateRequired({ ambulanceName: 'Provider Name', ambulanceContact: 'Contact', ambulanceLocation: 'Location'}, 'ambulanceEntry')) return;
+            const ambulanceData = {
+                name: document.getElementById('ambulanceName').value,
+                driver: document.getElementById('driverName').value,
+                contact: document.getElementById('ambulanceContact').value,
+                location: document.getElementById('ambulanceLocation').value,
+                availability: document.getElementById('ambulanceAvailability').value,
+                status: document.getElementById('ambulanceStatus').value
+            };
+            db.ambulances.push(ambulanceData);
+            displayResult('ambulanceEntryResult', `Ambulance service "${ambulanceData.name}" added successfully!`, 'success');
+            clearForm('ambulanceEntry');
+             console.log("Ambulances:", db.ambulances); // Debug
+        }
+
+        function searchAmbulance() {
+            const location = document.getElementById('searchAmbulanceLocation').value.toLowerCase();
+             const filtered = db.ambulances.filter(a => a.location.toLowerCase().includes(location));
+             const fields = [{name: 'Provider'}, 'driver', 'contact', 'location', 'availability', {status: 'Type/Status'}];
+            displayResult('ambulanceSearchResult', formatSearchResults(filtered, fields, "No ambulances found matching that location."), 'html');
+        }
+
+        function addBlood() {
+            if (!validateRequired({ bloodBankName: 'Bank Name', bloodContact: 'Contact', bloodLocation: 'Location'}, 'bloodEntry')) return;
+            const bloodData = {
+                bankName: document.getElementById('bloodBankName').value,
+                group: document.getElementById('bloodGroup').value,
+                units: document.getElementById('bloodUnits').value || 'N/A', // Get units
+                contact: document.getElementById('bloodContact').value,
+                location: document.getElementById('bloodLocation').value,
+                availability: document.getElementById('bloodAvailability').value
+            };
+            db.bloodBanks.push(bloodData);
+            displayResult('bloodEntryResult', `Blood donation info for ${bloodData.group} at ${bloodData.bankName} added.`, 'success');
+            clearForm('bloodEntry');
+             console.log("Blood Banks:", db.bloodBanks); // Debug
+        }
+
+        function searchBlood() {
+            const location = document.getElementById('searchBloodLocation').value.toLowerCase();
+            const group = document.getElementById('searchBloodGroup').value;
+            const filtered = db.bloodBanks.filter(b =>
+                 (b.location.toLowerCase().includes(location) || b.bankName.toLowerCase().includes(location)) && // Search location or bank name
+                 (!group || b.group === group) // Filter by group if selected
+             );
+            const fields = [{bankName: 'Bank/Hospital'}, 'group', 'units', 'contact', 'location', 'availability'];
+             displayResult('bloodSearchResult', formatSearchResults(filtered, fields, "No blood banks found matching criteria."), 'html');
+        }
+
+        function addDoctor() {
+             if (!validateRequired({ doctorName: 'Name', doctorSpecialization: 'Specialization', doctorContact: 'Contact', doctorLocation: 'Location'}, 'doctorEntry')) return;
+            const doctorData = {
+                name: document.getElementById('doctorName').value,
+                specialization: document.getElementById('doctorSpecialization').value,
+                contact: document.getElementById('doctorContact').value,
+                location: document.getElementById('doctorLocation').value,
+                availability: document.getElementById('doctorAvailability').value,
+                fees: document.getElementById('doctorFees').value,
+                status: document.getElementById('doctorStatus').value
+            };
+            db.doctors.push(doctorData);
+            displayResult('doctorEntryResult', `Doctor ${doctorData.name} (${doctorData.specialization}) added successfully!`, 'success');
+            clearForm('doctorEntry');
+            console.log("Doctors:", db.doctors); // Debug
+        }
+
+        function searchDoctor() {
+            const location = document.getElementById('searchDoctorLocation').value.toLowerCase();
+            const specialization = document.getElementById('searchDoctorSpecialization').value.toLowerCase();
+            const filtered = db.doctors.filter(d =>
+                (d.location.toLowerCase().includes(location) || d.name.toLowerCase().includes(location)) && // Search location or name
+                (!specialization || d.specialization.toLowerCase().includes(specialization)) // Filter by specialization
+            );
+            const fields = ['name', 'specialization', 'location', {availability: 'Schedule'}, 'contact', 'fees', {status: 'Info'}];
+            displayResult('doctorSearchResult', formatSearchResults(filtered, fields, "No doctors found matching criteria."), 'html');
+        }
+
+        function reportSymptom() {
+             // Auto-generate ID if empty
+            let patientId = document.getElementById('patientId').value.trim();
+            if (!patientId) {
+                patientId = 'PAT' + Date.now().toString().slice(-6); // Simple unique ID generator
+                document.getElementById('patientId').value = patientId; // Display the generated ID
+            }
+
+            if (!validateRequired({ patientName: 'Name', patientSymptom: 'Symptoms' }, 'patientSymptom')) return;
+
+            const patientData = {
+                id: patientId,
+                name: document.getElementById('patientName').value,
+                age: document.getElementById('patientAge').value,
+                gender: document.getElementById('patientGender').value,
+                symptom: document.getElementById('patientSymptom').value,
+                timestamp: new Date().toLocaleString()
+            };
+
+            const existingPatientIndex = db.patients.findIndex(p => p.id === patientData.id);
+            if (existingPatientIndex > -1) {
+                // Append symptom and update timestamp (or replace, depending on requirement)
+                 db.patients[existingPatientIndex].symptom += "\n\nUpdate (" + patientData.timestamp + "):\n" + patientData.symptom;
+                 db.patients[existingPatientIndex].timestamp = patientData.timestamp; // Update last report time
+                displayResult('symptomResult', `Symptoms updated for Patient ID: ${patientData.id}. Generated ID (if new): ${patientId}`, 'success');
+            } else {
+                db.patients.push(patientData);
+                displayResult('symptomResult', `Symptom report submitted successfully! Your Patient ID is: ${patientData.id}`, 'success');
+            }
+             console.log("Patients:", db.patients); // Debug
+             // Don't clear the form immediately, so user can see the assigned ID if it was generated
+             // clearForm('patientSymptom');
+        }
+
+        function doctorSearchPatient() {
+             if (!validateRequired({ doctorSearchPatientId: 'Patient ID' }, 'doctorSearchPatient')) return;
+             const patientId = document.getElementById('doctorSearchPatientId').value;
+             const patient = db.patients.find(p => p.id === patientId);
+             if (patient) {
+                 displayResult('doctorSearchPatientResult', {
+                    ID: patient.id,
+                    Name: patient.name,
+                    Age: patient.age || 'N/A',
+                     Gender: patient.gender || 'N/A',
+                    Symptoms: patient.symptom,
+                     'Last Reported': patient.timestamp
+                 }, 'object');
+             } else {
+                 displayResult('doctorSearchPatientResult', `Patient with ID "${patientId}" not found.`, 'error');
+             }
+        }
+
+        function addPrescription() {
+             if (!validateRequired({ prescriptionPatientId: 'Patient ID', medicineName: 'Medicine', medicineTime: 'Timing', medicineDays: 'Duration' }, 'doctorPrescription')) return;
+
+            const patientId = document.getElementById('prescriptionPatientId').value;
+            // Check if patient exists (optional but good practice)
+            const patientExists = db.patients.some(p => p.id === patientId);
+             if (!patientExists) {
+                 displayResult('prescriptionResult', `Patient with ID ${patientId} not found in symptom reports. Add patient data first or verify ID.`, 'error');
+                 return;
+             }
+
+             const prescriptionData = {
+                 p_id: Date.now(), // Unique ID for this prescription item
+                patientId: patientId,
+                medicine: document.getElementById('medicineName').value,
+                 dose: document.getElementById('medicineDose').value || 'N/A',
+                 time: document.getElementById('medicineTime').value,
+                days: document.getElementById('medicineDays').value,
+                 notes: document.getElementById('prescriptionNotes').value || 'N/A',
+                prescribedDate: new Date().toLocaleDateString() // Simpler date
+            };
+
+            db.prescriptions.push(prescriptionData);
+            displayResult('prescriptionResult', 'Prescription added successfully!', 'success');
+            clearForm('doctorPrescription');
+             console.log("Prescriptions:", db.prescriptions); // Debug
+        }
+
+         function viewPrescription() {
+             if (!validateRequired({ patientPrescriptionId: 'Patient ID' }, 'patientPrescription')) return;
+             const patientId = document.getElementById('patientPrescriptionId').value;
+             const patient = db.patients.find(p => p.id === patientId); // Get patient basic info
+             const patientPrescriptions = db.prescriptions.filter(p => p.patientId === patientId);
+
+            if (!patient) {
+                displayResult('patientPrescriptionResult', `Patient with ID "${patientId}" not found.`, 'error');
+                return;
+            }
+
+            if (patientPrescriptions.length === 0) {
+                 displayResult('patientPrescriptionResult', `No prescriptions found for Patient ID: ${patientId}`, 'error');
+                return;
+             }
+
+             // Format prescriptions nicely
+             let html = `<div class="result-list-item">
+                           <p><strong>Patient ID:</strong> ${patient.id}</p>
+                            <p><strong>Name:</strong> ${patient.name}</p>
+                            <p><strong>Age:</strong> ${patient.age || 'N/A'}</p>
+                        </div>
+                         <h4 style="margin-top: 15px; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Prescriptions:</h4>
+                     `;
+
+            patientPrescriptions.sort((a, b) => b.p_id - a.p_id); // Show newest first
+
+            patientPrescriptions.forEach(pres => {
+                 html += `
+                    <div class="result-list-item">
+                        <p><strong>Date:</strong> ${pres.prescribedDate}</p>
+                         <p><strong>Medicine:</strong> ${pres.medicine}</p>
+                         <p><strong>Dosage:</strong> ${pres.dose}</p>
+                         <p><strong>Timing:</strong> ${pres.time}</p>
+                         <p><strong>Duration:</strong> ${pres.days}</p>
+                         <p><strong>Notes:</strong> ${pres.notes}</p>
+                    </div>
+                `;
+             });
+             displayResult('patientPrescriptionResult', html, 'html');
+        }
+
+
+        function redirectMedex() {
+            const medicine = document.getElementById('medicineRedirect').value;
+             if (!medicine.trim()) {
+                 displayResult('medexResult', 'Please enter a medicine name.', 'error');
+                 return;
+             }
+            displayResult('medexResult', `Redirecting to Medex to search for "${medicine}"...`, 'success');
+             setTimeout(() => {
+                 window.open(`https://medex.com.bd/brands/search?name=${encodeURIComponent(medicine)}`, '_blank'); // Using /brands/search path seems common
+             }, 600); // Slightly longer delay
+        }
+
+
+        // Initial setup on page load
+        document.addEventListener('DOMContentLoaded', () => {
+             showSection('addRoom'); // Show the first section by default
+         });
+
+    </script>
+</body>
+</html>

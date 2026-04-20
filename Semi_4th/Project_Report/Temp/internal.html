@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Internal Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Hospital Internal Portal</h1>
+        <nav>
+            <p>Select an option:</p>
+            <ul>
+                <li><a href="#add-room-section" class="nav-link">1. Add Room Information</a></li>
+                <li><a href="#search-room-section" class="nav-link">2. Get Room Information</a></li>
+                <li><a href="#add-worker-section" class="nav-link">3. Add Worker Information</a></li>
+                <li><a href="#search-worker-section" class="nav-link">4. Get Worker Information</a></li>
+            </ul>
+             <a href="index.html" class="home-link button">Back to Main Portal</a>
+        </nav>
+
+        <!-- Section 1: Add Room -->
+        <section id="add-room-section">
+            <h2>1. Add Room Information</h2>
+            <form id="add-room-form">
+                <label for="room-number">Room Number:</label>
+                <input type="text" id="room-number" required>
+
+                <label for="room-type">Room Type (AC/Non-AC):</label>
+                <input type="text" id="room-type" required>
+
+                <label for="room-availability">Room Availability:</label>
+                <input type="text" id="room-availability" required>
+
+                <label for="room-for">Room For:</label>
+                <input type="text" id="room-for" required>
+
+                <label for="room-capacity">Capacity (People per patient):</label>
+                <input type="number" id="room-capacity" required>
+
+                <button type="submit">Add Room</button>
+            </form>
+            <div class="output" id="add-room-output"></div>
+        </section>
+
+        <!-- Section 2: Search Room -->
+        <section id="search-room-section">
+            <h2>2. Get Room Information</h2>
+            <form id="search-room-form">
+                <label for="search-room-number">Enter Room Number:</label>
+                <input type="search" id="search-room-number" required>
+                <button type="submit">Search Room</button>
+            </form>
+            <div class="results" id="search-room-results">Enter a room number to search.</div>
+        </section>
+
+        <!-- Section 3: Add Worker -->
+        <section id="add-worker-section">
+            <h2>3. Add Worker Information</h2>
+            <form id="add-worker-form">
+                <label for="worker-id">Worker ID:</label>
+                <input type="text" id="worker-id" required>
+
+                <label for="worker-name">Worker Name:</label>
+                <input type="text" id="worker-name" required>
+
+                <label for="worker-job-title">Worker Job Title:</label>
+                <input type="text" id="worker-job-title" required>
+
+                <label for="worker-hours">Working Hours:</label>
+                <input type="text" id="worker-hours" required>
+
+                <div id="doctor-spec-field">
+                     <label for="doctor-specialization">Doctor Specialization (Enter '0' if not applicable):</label>
+                    <input type="text" id="doctor-specialization" value="0">
+                 </div>
+
+                <label for="worker-contact">Worker Contact Number:</label>
+                <input type="text" id="worker-contact" required>
+
+                <button type="submit">Add Worker</button>
+            </form>
+             <div class="output" id="add-worker-output"></div>
+        </section>
+
+        <!-- Section 4: Search Worker -->
+        <section id="search-worker-section">
+            <h2>4. Get Worker Information</h2>
+            <form id="search-worker-form">
+                <label for="search-worker-id">Enter Worker ID:</label>
+                <input type="search" id="search-worker-id" required>
+                <button type="submit">Search Worker</button>
+            </form>
+            <div class="results" id="search-worker-results">Enter a worker ID to search.</div>
+        </section>
+
+    </div>
+
+    <script src="internal.js"></script>
+</body>
+</html>

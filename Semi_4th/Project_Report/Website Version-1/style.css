@@ -1,0 +1,420 @@
+/* --- Base & Variables --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary-color: #005ce6; /* Slightly brighter blue */
+    --primary-darker: #0047b3;
+    --secondary-color: #6c757d;
+    --secondary-darker: #5a6268;
+    --success-color: #198754; /* Bootstrap 5 Green */
+    --danger-color: #dc3545; /* Bootstrap 5 Red */
+    --warning-color: #ffc107; /* Bootstrap 5 Yellow */
+    --info-color: #0dcaf0;   /* Bootstrap 5 Teal/Info */
+    --light-color: #f8f9fa;
+    --lighter-gray: #e9ecef;
+    --dark-color: #343a40;
+    --white-color: #ffffff;
+    --font-family: 'Poppins', sans-serif;
+    --border-radius: 8px; /* Slightly larger radius */
+    --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --box-shadow-light: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --transition-speed: 0.25s ease-in-out;
+}
+
+/* --- Reset & Base Styles --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+}
+
+body {
+    font-family: var(--font-family);
+    line-height: 1.7; /* Slightly increased line-height */
+    background-color: #f0f2f5; /* Softer background */
+    color: var(--dark-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-size: 16px;
+}
+
+/* --- Layout & Container --- */
+.container {
+    width: 90%;
+    max-width: 1100px; /* Slightly wider max-width */
+    margin: 2.5rem auto;
+    padding: 0 1rem; /* Add side padding for smaller screens */
+}
+
+.home-container {
+    text-align: center;
+    background-color: var(--white-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2.5rem 2rem; /* More padding */
+}
+
+/* --- Header & Footer --- */
+.main-header {
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-darker) 100%);
+    color: var(--white-color);
+    padding: 1.5rem 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.main-header h1 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.8em; /* Adjusted size */
+    text-align: center;
+}
+.main-header h1 i {
+    margin-right: 0.75rem;
+    vertical-align: middle; /* Align icon better */
+}
+
+
+.main-footer {
+    background-color: var(--dark-color);
+    color: #adb5bd; /* Lighter text for footer */
+    padding: 1rem 0;
+    text-align: center;
+    margin-top: auto;
+    font-size: 0.9em;
+}
+.main-footer p {
+    margin: 0;
+}
+
+/* --- Typography --- */
+h1, h2, h3 {
+    margin-bottom: 1.2rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+/* Use H2 for main portal identification */
+.portal-header h2 {
+    color: var(--primary-darker);
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 2rem;
+}
+
+
+h2.section-title {
+    font-size: 1.6em;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.6rem;
+    margin-bottom: 1.5rem;
+    display: flex; /* Align icon and text */
+    align-items: center;
+}
+h2.section-title i {
+    margin-right: 0.8rem;
+    font-size: 0.9em; /* Make icon slightly smaller than text */
+}
+
+
+p { margin-bottom: 1.2rem; color: #555; } /* Slightly lighter paragraph text */
+a { color: var(--primary-color); text-decoration: none; transition: color var(--transition-speed); }
+a:hover { color: var(--primary-darker); text-decoration: none; }
+
+/* --- Buttons --- */
+.button, button {
+    display: inline-flex; /* Use flex for icon alignment */
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 1.8rem; /* Adjusted padding */
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    font-weight: 500; /* Slightly bolder text */
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
+    margin: 5px;
+    color: var(--white-color);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */
+}
+.button i, button i {
+    margin-right: 0.6rem; /* Space between icon and text */
+}
+
+.button:hover, button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+.button:active, button:active {
+     transform: translateY(-1px);
+     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.button-primary, button[type="submit"] {
+    background-color: var(--primary-color);
+}
+.button-primary:hover, button[type="submit"]:hover {
+    background-color: var(--primary-darker);
+}
+
+.button-secondary {
+    background-color: var(--secondary-color);
+}
+.button-secondary:hover {
+    background-color: var(--secondary-darker);
+}
+.button-success { background-color: var(--success-color); }
+.button-success:hover { background-color: darken(var(--success-color), 10%); }
+.button-danger { background-color: var(--danger-color); }
+.button-danger:hover { background-color: darken(var(--danger-color), 10%); }
+
+/* Specific button adjustments */
+form button[type="submit"] {
+    margin-top: 1rem;
+    min-width: 120px; /* Give submit buttons a min width */
+}
+
+.home-link.button {
+    margin-top: 2rem;
+    display: block; /* Make it a block element for centering/full width if needed */
+    max-width: 250px; /* Limit width */
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--secondary-color);
+}
+.home-link.button:hover {
+     background-color: var(--secondary-darker);
+}
+
+
+/* --- Navigation (Internal Pages) --- */
+nav.sidebar { /* Optional: could make nav a sidebar */
+    margin-bottom: 2.5rem;
+    padding: 1.5rem;
+    background-color: var(--white-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-light);
+}
+nav.sidebar h3 {
+    color: var(--primary-darker);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 1.3em;
+}
+
+nav.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem; /* Space before back button */
+}
+nav.sidebar ul li {
+    margin-bottom: 0.2rem; /* Tighter spacing */
+}
+nav.sidebar ul li a.nav-link {
+    display: block;
+    padding: 0.6rem 1rem;
+    font-weight: 500;
+    color: var(--dark-color);
+    border-radius: 5px;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+nav.sidebar ul li a.nav-link i {
+    margin-right: 0.7rem;
+    width: 20px; /* Fixed width for alignment */
+    text-align: center;
+    color: var(--primary-color); /* Icon color */
+}
+
+nav.sidebar ul li a.nav-link:hover {
+    background-color: var(--lighter-gray);
+    color: var(--primary-darker);
+}
+
+/* --- Cards for Sections --- */
+section.content-section {
+    background-color: var(--white-color);
+    padding: 2rem 2.5rem; /* More padding */
+    margin-bottom: 2.5rem; /* More spacing */
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    border-left: 5px solid transparent; /* Placeholder for potential state indication */
+}
+
+/* Add subtle hover effect to cards */
+/* section.content-section:hover { */
+    /* transform: translateY(-3px); */ /* Optional subtle lift */
+    /* box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12); */
+/* } */
+
+
+/* --- Forms --- */
+form {
+    margin-top: 1rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.6rem; /* More space */
+    font-weight: 600;
+    color: var(--secondary-darker); /* Darker label */
+    font-size: 0.95em;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="search"],
+input[type="email"],
+textarea,
+select {
+    width: 100%;
+    padding: 0.8rem 1rem; /* Increased padding */
+    margin-bottom: 1.2rem; /* More space below input */
+    border: 1px solid #ced4da; /* Standard border */
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    font-family: inherit; /* Ensure form elements use the body font */
+    background-color: #fdfdfd; /* Slightly off-white */
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: var(--white-color);
+    box-shadow: 0 0 0 3px rgba(0, 92, 230, 0.2); /* More pronounced focus glow */
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* --- Output & Results --- */
+.output, .results {
+    margin-top: 1.5rem;
+    padding: 1rem 1.5rem; /* More padding */
+    background-color: var(--lighter-gray);
+    border: 1px solid #d6d9db;
+    border-left-width: 5px; /* Make left border thicker */
+    border-left-color: var(--secondary-color); /* Default border color */
+    border-radius: var(--border-radius);
+    min-height: 50px;
+    white-space: pre-wrap;
+    font-size: 0.95em;
+    line-height: 1.6;
+    display: flex; /* Use flex for icon alignment */
+    align-items: center; /* Align icon and text vertically */
+    transition: all var(--transition-speed); /* Animate changes */
+    word-wrap: break-word; /* Allow long text to wrap */
+}
+
+/* Hide element completely if it's truly empty after clearing */
+.output:empty, .results:empty {
+    display: none; /* Changed from just padding/border removal */
+}
+
+
+.output i, .results i {
+    font-size: 1.2em;
+    margin-right: 1rem; /* Space between icon and text */
+    margin-left: 0.2rem;
+    align-self: flex-start; /* Align icon to the top if text wraps */
+    padding-top: 0.2em; /* Adjust icon vertical alignment slightly */
+}
+
+/* Specific styling for message types */
+.output.success, .results.success {
+    color: var(--success-color);
+    border-left-color: var(--success-color);
+    background-color: #d1e7dd; /* Lighter Green background */
+}
+.output.success i, .results.success i { color: var(--success-color); }
+
+.output.error, .results.error {
+    color: var(--danger-color);
+    border-left-color: var(--danger-color);
+    background-color: #f8d7da; /* Lighter Red background */
+}
+.output.error i, .results.error i { color: var(--danger-color); }
+
+.output.warning, .results.warning {
+    color: #664d03; /* Darker Yellow text */
+    border-left-color: var(--warning-color);
+    background-color: #fff3cd; /* Lighter Yellow background */
+}
+.output.warning i, .results.warning i { color: var(--warning-color); }
+
+.output.info, .results.info { /* Style for general info */
+    color: #055160; /* Darker Teal */
+    border-left-color: var(--info-color);
+    background-color: #cff4fc; /* Lighter Teal */
+}
+.output.info i, .results.info i { color: var(--info-color); }
+
+/* Style search results content */
+.results strong {
+    font-weight: 600;
+    color: var(--dark-color);
+    display: block; /* Make titles block for spacing */
+    margin-bottom: 0.5rem;
+}
+/* Add class to results content for specific styling if needed */
+.results .result-content {
+    flex-grow: 1; /* Allow text content to take remaining space */
+}
+
+.results hr {
+    border: 0;
+    height: 1px;
+    background-color: #ccc;
+    margin: 1rem 0;
+}
+
+
+/* --- Helper Classes --- */
+.hidden { display: none; }
+
+/* --- Font Awesome Base --- */
+.fas, .far, .fal, .fab {
+    display: inline-block; /* Ensure icons behave correctly */
+}
+
+/* --- Responsive Considerations --- */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        margin: 1.5rem auto;
+    }
+    .main-header h1 { font-size: 1.5em; }
+    h2.section-title { font-size: 1.4em; }
+
+    section.content-section {
+        padding: 1.5rem;
+    }
+
+    .button, button {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.95em;
+    }
+     nav.sidebar { /* Stack nav above content on smaller screens */
+         margin-bottom: 1.5rem;
+     }
+}
+
+@media (max-width: 480px) {
+    h2.section-title { font-size: 1.2em; }
+    .button i, button i { margin-right: 0.4rem; } /* Less space for icon on small buttons */
+     .button, button { padding: 0.6rem 1rem; }
+     section.content-section { padding: 1rem; }
+     .main-header h1 { font-size: 1.3em; }
+}
